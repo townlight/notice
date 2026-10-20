@@ -74,7 +74,7 @@ def render_public_lookup_page() -> str:
     <article class="card large"><p class="kicker">Boundary</p><h2>No official publication</h2><div class="result warning"><p>CivicNotice does not determine legal sufficiency, publish official notices, provide legal advice, call live LLMs, write back to publication systems, or replace the notice system of record.</p></div></article>
   </section>
 </main>
-<footer><p>CivicNotice is part of the Apache 2.0 CivicSuite open-source municipal AI project.</p></footer>
+<footer><p>CivicNotice is part of the AGPL-3.0 CivicSuite open-source municipal AI project.</p></footer>
 </body>
 </html>
 """

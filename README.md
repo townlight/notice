@@ -80,4 +80,5 @@ The release gate requires `CIVICNOTICE_POSTGRES_TEST_URL` so PostgreSQL persiste
 
 ## License
 
-Code is Apache License 2.0. Documentation is CC BY 4.0.
+Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).
+Documentation: CC BY 4.0 ([LICENSE-DOCS](LICENSE-DOCS)).
