@@ -1,12 +1,14 @@
-# CivicNotice Milestones
+<a id="civicnotice-milestones"></a>
+
+# Townlight Notice Milestones
 
 ## Milestone 0 - Reconciliation
 
-Align repo docs and gates to the CivicSuite unified spec.
+Align repo docs and gates to the Townlight unified spec.
 
 ## Milestone 1 - Runtime Foundation
 
-FastAPI package, health/root endpoints, CivicCore pin, docs, tests, and release gate.
+FastAPI package, health/root endpoints, Townlight Core pin, docs, tests, and release gate.
 
 ## Milestone 2 - notice registry
 

@@ -1,4 +1,4 @@
-"""Notice drafting templates for CivicNotice v0.2.0."""
+"""Notice drafting templates for Townlight Notice v0.2.0."""
 
 from __future__ import annotations
 

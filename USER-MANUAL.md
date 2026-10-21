@@ -1,14 +1,16 @@
-# CivicNotice User Manual
+<a id="civicnotice-user-manual"></a>
+
+# Townlight Notice User Manual
 
 ## For Non-Technical Users
 
-CivicNotice helps city staff organize public hearing notices, legal notices, bid notices, vacancy notices, publication deadlines, channel planning notes, accessibility and language-readiness checks, proof requirements, subscriber delivery plans, archive/handoff packets, and export manifests. It can create a sample notice registry stub, build publication deadline reminders, check a draft packet against deterministic staff-review rules, create a staff-editable notice template, retrieve saved registry/deadline/publication-proof workpapers when IT enables persistence, assemble publication-readiness checklists, summarize channel planning, build accessibility/plain-language/translation readiness packets, build subscriber delivery plans, assemble archive/handoff packets, and assemble a notice/records export checklist.
+Townlight Notice helps city staff organize public hearing notices, legal notices, bid notices, vacancy notices, publication deadlines, channel planning notes, accessibility and language-readiness checks, proof requirements, subscriber delivery plans, archive/handoff packets, and export manifests. It can create a sample notice registry stub, build publication deadline reminders, check a draft packet against deterministic staff-review rules, create a staff-editable notice template, retrieve saved registry/deadline/publication-proof workpapers when IT enables persistence, assemble publication-readiness checklists, summarize channel planning, build accessibility/plain-language/translation readiness packets, build subscriber delivery plans, assemble archive/handoff packets, and assemble a notice/records export checklist.
 
-Release state: the latest published GitHub release is `v0.1.1`. The current in-tree source is `0.2.0`, the notice-compliance foundation aligned to the `civiccore v1.2.0` release wheel; `0.2.0` is bundled source, not yet published as a GitHub release. CivicNotice uses the shared CivicCore notice-deadline helper for deterministic reminder plans, but it still does not decide legal sufficiency, publish official notices, provide legal advice, call live LLMs, write back to publication systems, or update a notice system of record. Staff own every decision.
+Release state: the latest published GitHub release is `v0.1.1`. The current in-tree source is `0.2.0`, the notice-compliance foundation aligned to the `civiccore v1.2.0` release wheel; `0.2.0` is bundled source, not yet published as a GitHub release. Townlight Notice uses the shared Townlight Core notice-deadline helper for deterministic reminder plans, but it still does not decide legal sufficiency, publish official notices, provide legal advice, call live LLMs, write back to publication systems, or update a notice system of record. Staff own every decision.
 
 ## For IT and Technical Staff
 
-CivicNotice is a FastAPI Python package pinned to the `civiccore v1.2.0` release wheel. The current runtime exposes:
+Townlight Notice is a FastAPI Python package pinned to the `civiccore v1.2.0` release wheel. The current runtime exposes:
 
 Set `CIVICNOTICE_WORKPAPER_DB_URL` to enable SQLAlchemy-backed notice registry, deadline-plan, and publication-proof records. Leave it unset for deterministic stateless operation: registry and deadline POST requests return transient payloads, persisted GET routes return actionable 503 responses, and publication-proof storage is unavailable. When persistence is enabled, set `CIVICNOTICE_TRUSTED_WRITE_TOKEN` and send the matching `X-CivicNotice-Write-Token` header for durable write routes.
 
@@ -32,9 +34,11 @@ Set `CIVICNOTICE_WORKPAPER_DB_URL` to enable SQLAlchemy-backed notice registry, 
 - `POST /api/v1/civicnotice/archive-packet`
 - `POST /api/v1/civicnotice/export`
 
-## Start and Smoke-Check CivicNotice
+<a id="start-and-smoke-check-civicnotice"></a>
 
-A fresh user can reach the core stateless API and public sample UI without a database, model server, account, or API key. Start the ASGI app target `civicnotice.main:app`, then confirm `/health` reports CivicNotice `0.2.0` and CivicCore `1.2.0`.
+## Start and Smoke-Check Townlight Notice
+
+A fresh user can reach the core stateless API and public sample UI without a database, model server, account, or API key. Start the ASGI app target `civicnotice.main:app`, then confirm `/health` reports Townlight Notice `0.2.0` and Townlight Core `1.2.0`.
 
 Minimal smoke-check workflow:
 
@@ -62,4 +66,4 @@ flowchart LR
   CivicNotice --> Export["Notice and records export checklist"]
 ```
 
-CivicNotice depends on CivicCore. CivicCore does not depend on CivicNotice. CivicNotice v0.2.0 uses the shared CivicCore notice deadline helper plus deterministic sample notice data, staff-review rule packs, notice templates, accessibility and language-readiness packets, subscriber delivery plans, archive/handoff packets, and optional publication-proof workpapers only; live agenda/procurement handoffs, legal sufficiency decisions, legal advice, official notice publication, publication-system write-back, and production notice-system integrations are future work.
+Townlight Notice depends on Townlight Core. Townlight Core does not depend on Townlight Notice. Townlight Notice v0.2.0 uses the shared Townlight Core notice deadline helper plus deterministic sample notice data, staff-review rule packs, notice templates, accessibility and language-readiness packets, subscriber delivery plans, archive/handoff packets, and optional publication-proof workpapers only; live agenda/procurement handoffs, legal sufficiency decisions, legal advice, official notice publication, publication-system write-back, and production notice-system integrations are future work.

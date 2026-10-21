@@ -1,8 +1,10 @@
 # GitHub Discussions Seed Posts
 
-## Welcome to CivicNotice
+<a id="welcome-to-civicnotice"></a>
 
-CivicNotice is the CivicSuite module for notice registry, deadline tracking, publication readiness tracking, channel planning, and notice/records export checklists.
+## Welcome to Townlight Notice
+
+Townlight Notice is the Townlight module for notice registry, deadline tracking, publication readiness tracking, channel planning, and notice/records export checklists.
 
 ## v0.1.0 Release Discussion
 

@@ -1,13 +1,17 @@
-# CivicNotice
+<a id="civicnotice"></a>
 
-CivicNotice is the CivicSuite module for public hearing notices, legal notices, bid notices, vacancy notices, statutory publication deadlines, statutory rule checks, notice drafting templates, accessibility and language-readiness review, publication-readiness review, channel planning, subscriber delivery planning, archive/handoff packets, and notice-record export checklists.
+# Townlight Notice
 
-Release state: the latest **published GitHub release is `v0.1.1`**. The current in-tree source is **`v0.2.0`**, the notice-compliance foundation aligned to the `civiccore v1.2.0` release wheel; `v0.2.0` is **bundled source, not yet published as a GitHub release** (it ships only through the Windows Local city-core profile's commit-pinned bundle). This repo provides a FastAPI package, health/root endpoints, documentation gates, deterministic sample notice registry, CivicCore-backed statutory deadline plans, deterministic statutory rule checks, notice drafting templates, accessibility and language-readiness review packets, optional database-backed registry/deadline/publication-proof workpapers, publication-readiness checklists, channel-planning helpers, subscriber delivery planning, archive/handoff packets, notice/records export checklist, and accessible public sample UI at `/civicnotice`. It does **not** ship legal sufficiency decisions, legal advice, live LLM calls, official notice publication, publication-system write-back, or notice system-of-record integrations.
+Townlight Notice is the Townlight module for public hearing notices, legal notices, bid notices, vacancy notices, statutory publication deadlines, statutory rule checks, notice drafting templates, accessibility and language-readiness review, publication-readiness review, channel planning, subscriber delivery planning, archive/handoff packets, and notice-record export checklists.
 
-## What CivicNotice Does
+Release state: the latest **published GitHub release is `v0.1.1`**. The current in-tree source is **`v0.2.0`**, the notice-compliance foundation aligned to the `civiccore v1.2.0` release wheel; `v0.2.0` is **bundled source, not yet published as a GitHub release** (it ships only through the Windows Local city-core profile's commit-pinned bundle). This repo provides a FastAPI package, health/root endpoints, documentation gates, deterministic sample notice registry, Townlight Core-backed statutory deadline plans, deterministic statutory rule checks, notice drafting templates, accessibility and language-readiness review packets, optional database-backed registry/deadline/publication-proof workpapers, publication-readiness checklists, channel-planning helpers, subscriber delivery planning, archive/handoff packets, notice/records export checklist, and accessible public sample UI at `/civicnotice`. It does **not** ship legal sufficiency decisions, legal advice, live LLM calls, official notice publication, publication-system write-back, or notice system-of-record integrations.
+
+<a id="what-civicnotice-does"></a>
+
+## What Townlight Notice Does
 
 - Create sample notice registry stubs.
-- Build statutory publication deadline reminder plans using the shared CivicCore notice helper.
+- Build statutory publication deadline reminder plans using the shared Townlight Core notice helper.
 - Check notice packets against deterministic staff-review rule packs for common notice types.
 - Build staff-editable notice templates with required fields and unresolved placeholders.
 - Build accessibility, plain-language, and human-approved translation readiness packets.
@@ -20,7 +24,9 @@ Release state: the latest **published GitHub release is `v0.1.1`**. The current 
 - Produce notice and records export checklists.
 - Demonstrate a public notice-support UI at `/civicnotice`.
 
-## What CivicNotice Does Not Do
+<a id="what-civicnotice-does-not-do"></a>
+
+## What Townlight Notice Does Not Do
 
 - It does not decide legal sufficiency.
 - It does not publish official notices.
@@ -32,7 +38,7 @@ Release state: the latest **published GitHub release is `v0.1.1`**. The current 
 ## API Surface
 
 - `GET /` returns the shipped/planned boundary.
-- `GET /health` returns package and CivicCore versions.
+- `GET /health` returns package and Townlight Core versions.
 - `GET /civicnotice` returns the accessible public sample UI.
 - `GET /docs` opens the interactive FastAPI API documentation for local deployments.
 - `GET /openapi.json` returns the machine-readable API schema, including accepted request and error shapes.
@@ -51,20 +57,22 @@ Release state: the latest **published GitHub release is `v0.1.1`**. The current 
 - `POST /api/v1/civicnotice/archive-packet` returns archive and handoff readiness for a notice file.
 - `POST /api/v1/civicnotice/export` returns a notice and records export checklist.
 
-## Start and Smoke-Check CivicNotice
+<a id="start-and-smoke-check-civicnotice"></a>
+
+## Start and Smoke-Check Townlight Notice
 
 Install the package with its development dependencies, start the ASGI app target `civicnotice.main:app`, and open the local `/health` and `/civicnotice` routes. A fresh user can reach the core stateless API and public sample UI without a database, model server, account, or API key.
 
 Minimal workflow to smoke-check after startup:
 
-1. Confirm `/health` reports `service: civicnotice`, version `0.2.0`, and CivicCore `1.2.0`.
+1. Confirm `/health` reports `service: civicnotice`, version `0.2.0`, and Townlight Core `1.2.0`.
 2. Post a registry stub to `/api/v1/civicnotice/registry` without a database and confirm the response includes `record_id: null`, registry notes, and the staff-responsibility disclaimer.
 3. Open `/docs` or `/openapi.json` to inspect accepted fields, then post a rule check to `/api/v1/civicnotice/rule-check` with a supported notice type, event date, publication dates, channels, content fields, and statutory basis. Unsupported notice types return a 422 response with supported choices.
 4. Open `/civicnotice` and confirm the page is a static public sample with boundary copy, not an official publication workflow.
 
 ## Persistence and Durable Writes
 
-Without `CIVICNOTICE_WORKPAPER_DB_URL`, CivicNotice runs in deterministic stateless mode: registry and deadline POST requests return transient payloads, persisted GET routes return actionable 503 responses, and publication-proof storage is unavailable.
+Without `CIVICNOTICE_WORKPAPER_DB_URL`, Townlight Notice runs in deterministic stateless mode: registry and deadline POST requests return transient payloads, persisted GET routes return actionable 503 responses, and publication-proof storage is unavailable.
 
 With `CIVICNOTICE_WORKPAPER_DB_URL`, registry, deadline, and publication-proof workpapers are durable. Persistence-backed write routes also require `CIVICNOTICE_TRUSTED_WRITE_TOKEN` and the matching `X-CivicNotice-Write-Token` request header. This is a minimal trusted-mode guard for local deployments; it is not a replacement for a production identity system.
 
