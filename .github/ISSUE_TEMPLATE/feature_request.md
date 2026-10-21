@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a CivicNotice capability
+about: Suggest a Townlight Notice capability
 title: "[Feature]: "
 labels: enhancement
 assignees: ""

@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping CivicNotice become useful municipal software.
+Thank you for helping Townlight Notice become useful municipal software.
 
 ## Development Loop
 
@@ -11,7 +11,7 @@ Thank you for helping CivicNotice become useful municipal software.
 
 ## Boundaries
 
-- CivicNotice gives notice-support drafts, not legal sufficiency decisions, legal advice, official publication, publication-system write-back, or system-of-record updates.
+- Townlight Notice gives notice-support drafts, not legal sufficiency decisions, legal advice, official publication, publication-system write-back, or system-of-record updates.
 - Do not present generated deadline plans, publication-readiness flags, channel plans, or records exports as decision-ready without staff review.
-- Do not import CivicCore placeholder packages.
+- Do not import Townlight Core placeholder packages.
 - Do not claim planned behavior is shipped.

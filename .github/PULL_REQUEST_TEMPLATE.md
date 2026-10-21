@@ -1,6 +1,6 @@
 ## Summary
 
-Describe the CivicNotice change in one or two sentences.
+Describe the Townlight Notice change in one or two sentences.
 
 ## Scope
 
@@ -23,4 +23,4 @@ Paste actual command output or screenshots for every checked item:
 - [ ] This PR does not claim legal sufficiency, legal advice, or official publication authority.
 - [ ] This PR does not provide legal advice.
 - [ ] This PR keeps publication-system write-back and system-of-record updates out of scope unless explicitly shipped.
-- [ ] This PR does not import CivicCore placeholder packages.
+- [ ] This PR does not import Townlight Core placeholder packages.
