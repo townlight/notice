@@ -63,4 +63,4 @@ Release gate:
 
 The full release gate requires CIVICNOTICE_POSTGRES_TEST_URL so PostgreSQL persistence coverage cannot be skipped. Plain unit tests may still run without PostgreSQL for local development.
 
-License: Apache License 2.0 for code; CC BY 4.0 for documentation.
+License: Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See LICENSE and LICENSE-EXCEPTION.md. Documentation: CC BY 4.0 (LICENSE-DOCS).
