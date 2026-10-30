@@ -1,4 +1,4 @@
-"""Accessibility and language-readiness review for Townlight Notice v0.2.0."""
+"""Accessibility and language-readiness review for CivicNotice v0.2.0."""
 
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ def build_accessibility_review(
     )
     notes = (
         "This packet prepares staff review before public posting; it does not certify ADA, WCAG, or language-access compliance.",
-        "Townlight Access integration and live translation workflows are not active in this release.",
+        "CivicAccess integration and live translation workflows are not active in this release.",
         "Preserve the approved accessible notice version with the proof-of-publication record.",
     )
     return NoticeAccessibilityReview(

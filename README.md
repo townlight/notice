@@ -88,5 +88,7 @@ The release gate requires `CIVICNOTICE_POSTGRES_TEST_URL` so PostgreSQL persiste
 
 ## License
 
-Code: AGPL-3.0-only, with the TownLight Public Institution Exception for qualifying deployments. See [LICENSE](LICENSE) and [LICENSE-EXCEPTION.md](LICENSE-EXCEPTION.md).
+Code: AGPL-3.0-only. See [LICENSE](LICENSE); historical grants are retained under docs/licensing/history.
 Documentation: CC BY 4.0 ([LICENSE-DOCS](LICENSE-DOCS)).
+
+Current owned candidate code: AGPL-3.0-only, without additional permissions. Historical grants retained under docs/licensing/history.

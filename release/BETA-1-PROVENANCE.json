@@ -1,0 +1,308 @@
+{
+  "edition": "Townlight Beta 1",
+  "base_commit": "3f0148eb0f14066cea747c3079ee63497c3eb26f",
+  "installer_sha256": "98bcdef11ebdf5c767f620c904ff49f85115fde3b5c23f62703b111e645aaf86",
+  "owned_source_sha256": "84a23e1297e42d17b16cfc9e51b2dd78bc46414c0de8ad7ebd2466c1a409d06b",
+  "documentation_sha256": "a928bb1c40fec7ef6f223c7b77bc9fe7837e4cfffcebf35bb3309cc5549284e6",
+  "release": "https://github.com/townlight/townlight/releases/tag/townlight-beta-1",
+  "archive_files": [
+    {
+      "archive": "products/notice/LICENSE",
+      "repo": "notice",
+      "path": "LICENSE",
+      "sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
+      "status": "same",
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "archive": "products/notice/LICENSE-CODE",
+      "repo": "notice",
+      "path": "LICENSE-CODE",
+      "sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
+      "status": "changed",
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "archive": "products/notice/LICENSE-DOCS",
+      "repo": "notice",
+      "path": "LICENSE-DOCS",
+      "sha256": "d07988f4be47912f75a73b44da8a9c0b602bf6c8ced69de858b848f379ecd973",
+      "status": "same",
+      "publication_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    },
+    {
+      "archive": "products/notice/README.md",
+      "repo": "notice",
+      "path": "README.md",
+      "sha256": "86f68aeec55143de291e31daa0c513c536888755a9162faa7566c6e3f81f9976",
+      "status": "changed",
+      "publication_sha256": "d8ef942c033796e90944285aef2da0a0f7c20594de43697b5fb03cec9a38278c"
+    },
+    {
+      "archive": "products/notice/civicnotice/__init__.py",
+      "repo": "notice",
+      "path": "civicnotice/__init__.py",
+      "sha256": "bbd01338724d14094a5fe8fc58148dbc0006aee9e6f74496dc4743de461d39f9",
+      "status": "changed",
+      "publication_sha256": "bbd01338724d14094a5fe8fc58148dbc0006aee9e6f74496dc4743de461d39f9"
+    },
+    {
+      "archive": "products/notice/civicnotice/accessibility_review.py",
+      "repo": "notice",
+      "path": "civicnotice/accessibility_review.py",
+      "sha256": "dc4d689287ab6e738a0f589c92283fed62983e71d96173620ac6cca12c431781",
+      "status": "changed",
+      "publication_sha256": "dc4d689287ab6e738a0f589c92283fed62983e71d96173620ac6cca12c431781"
+    },
+    {
+      "archive": "products/notice/civicnotice/archive_packet.py",
+      "repo": "notice",
+      "path": "civicnotice/archive_packet.py",
+      "sha256": "66bb57b4fcc26bf56ed5216d8b7bd746b42df2b4cedfc7999da1240539cf1ea1",
+      "status": "changed",
+      "publication_sha256": "66bb57b4fcc26bf56ed5216d8b7bd746b42df2b4cedfc7999da1240539cf1ea1"
+    },
+    {
+      "archive": "products/notice/civicnotice/channel_plan.py",
+      "repo": "notice",
+      "path": "civicnotice/channel_plan.py",
+      "sha256": "0527afffa3e9ea623f488300fc5c9ea0243d1fc531baa594deb4dc60c8bf1020",
+      "status": "changed",
+      "publication_sha256": "0527afffa3e9ea623f488300fc5c9ea0243d1fc531baa594deb4dc60c8bf1020"
+    },
+    {
+      "archive": "products/notice/civicnotice/deadline_tracker.py",
+      "repo": "notice",
+      "path": "civicnotice/deadline_tracker.py",
+      "sha256": "a316bf5ab85ecfddb549b804f706a7b4d2b5e45cea3bca293581bacef920f4a7",
+      "status": "changed",
+      "publication_sha256": "a316bf5ab85ecfddb549b804f706a7b4d2b5e45cea3bca293581bacef920f4a7"
+    },
+    {
+      "archive": "products/notice/civicnotice/main.py",
+      "repo": "notice",
+      "path": "civicnotice/main.py",
+      "sha256": "3aec4b0007a662276afbb8527fab22fe796e4d64c3568fe688ac97dc63bc69bc",
+      "status": "changed",
+      "publication_sha256": "3aec4b0007a662276afbb8527fab22fe796e4d64c3568fe688ac97dc63bc69bc"
+    },
+    {
+      "archive": "products/notice/civicnotice/notice_registry.py",
+      "repo": "notice",
+      "path": "civicnotice/notice_registry.py",
+      "sha256": "d4bfe8bbe04f7f3e9aa7114eb0d816714c600642df52a2b23efccfe9d7164628",
+      "status": "changed",
+      "publication_sha256": "d4bfe8bbe04f7f3e9aa7114eb0d816714c600642df52a2b23efccfe9d7164628"
+    },
+    {
+      "archive": "products/notice/civicnotice/notice_templates.py",
+      "repo": "notice",
+      "path": "civicnotice/notice_templates.py",
+      "sha256": "83ead3a5b7e273bb7f781b0178a7274e40b4b2502af7400023cd9f21990731b5",
+      "status": "changed",
+      "publication_sha256": "83ead3a5b7e273bb7f781b0178a7274e40b4b2502af7400023cd9f21990731b5"
+    },
+    {
+      "archive": "products/notice/civicnotice/persistence.py",
+      "repo": "notice",
+      "path": "civicnotice/persistence.py",
+      "sha256": "c9f4b2c92a8bd4c89a6d53c477645bbb570ab52190d1fc25d73136fa99d29eba",
+      "status": "same",
+      "publication_sha256": "c9f4b2c92a8bd4c89a6d53c477645bbb570ab52190d1fc25d73136fa99d29eba"
+    },
+    {
+      "archive": "products/notice/civicnotice/public_ui.py",
+      "repo": "notice",
+      "path": "civicnotice/public_ui.py",
+      "sha256": "9d9293bc584e9745b3f14cf07f5e005679cd9f8178ad58c24cd5f7455cea27d3",
+      "status": "changed",
+      "publication_sha256": "9d9293bc584e9745b3f14cf07f5e005679cd9f8178ad58c24cd5f7455cea27d3"
+    },
+    {
+      "archive": "products/notice/civicnotice/publication_check.py",
+      "repo": "notice",
+      "path": "civicnotice/publication_check.py",
+      "sha256": "f7e2e8505873bd0ebbfe4c906b7ecab8c447cf3fb4deaf8f378684514cf80d91",
+      "status": "changed",
+      "publication_sha256": "f7e2e8505873bd0ebbfe4c906b7ecab8c447cf3fb4deaf8f378684514cf80d91"
+    },
+    {
+      "archive": "products/notice/civicnotice/publication_proof.py",
+      "repo": "notice",
+      "path": "civicnotice/publication_proof.py",
+      "sha256": "355716debb2d6ddceba579fd516f051181f3c68323d91d83e9c103ff9b53fe00",
+      "status": "changed",
+      "publication_sha256": "355716debb2d6ddceba579fd516f051181f3c68323d91d83e9c103ff9b53fe00"
+    },
+    {
+      "archive": "products/notice/civicnotice/records_export.py",
+      "repo": "notice",
+      "path": "civicnotice/records_export.py",
+      "sha256": "ecc09b5047fbeca4adbeb0bc0a3e6b3a8766be035d84b540be839b9dcf66a264",
+      "status": "changed",
+      "publication_sha256": "ecc09b5047fbeca4adbeb0bc0a3e6b3a8766be035d84b540be839b9dcf66a264"
+    },
+    {
+      "archive": "products/notice/civicnotice/statutory_rules.py",
+      "repo": "notice",
+      "path": "civicnotice/statutory_rules.py",
+      "sha256": "2175a45b7a75e1545a0ab05260f5493f2770d0d2237da0583354ad0aa010442b",
+      "status": "changed",
+      "publication_sha256": "2175a45b7a75e1545a0ab05260f5493f2770d0d2237da0583354ad0aa010442b"
+    },
+    {
+      "archive": "products/notice/civicnotice/subscriber_delivery.py",
+      "repo": "notice",
+      "path": "civicnotice/subscriber_delivery.py",
+      "sha256": "a1664880a27cd5cac3e88f2539ba5db5f1938a2fa2044a113e2b55d294fcb7e7",
+      "status": "changed",
+      "publication_sha256": "a1664880a27cd5cac3e88f2539ba5db5f1938a2fa2044a113e2b55d294fcb7e7"
+    },
+    {
+      "archive": "products/notice/docs/licensing/history/LICENSE-CODE",
+      "repo": "notice",
+      "path": "docs/licensing/history/LICENSE-CODE",
+      "sha256": "042adabfdf441d62b892f1da6f44f57d4976b6260634fc33de986dc3fdf531f1",
+      "status": "new",
+      "publication_sha256": "00176665ab2fbe71080a02b261745ffc0bcf40c512fbc969ea404f3bb21904d4"
+    },
+    {
+      "archive": "products/notice/docs/licensing/history/LICENSE-EXCEPTION.md",
+      "repo": "notice",
+      "path": "docs/licensing/history/LICENSE-EXCEPTION.md",
+      "sha256": "8af2a3f7cbc186b31e10fecee3522854d524277c460646ba5544cc8e9acecfef",
+      "status": "new",
+      "publication_sha256": "8af2a3f7cbc186b31e10fecee3522854d524277c460646ba5544cc8e9acecfef"
+    },
+    {
+      "archive": "products/notice/pyproject.toml",
+      "repo": "notice",
+      "path": "pyproject.toml",
+      "sha256": "3afc0b16b0e86524ebb8bfd85a1cd8ae79897121f9e43b8b03f018ea4de770f4",
+      "status": "changed",
+      "publication_sha256": "341493bef67b336612314b21443ec905ff8f284bb2e0caa130234b0dd95ca825"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/__init__.py",
+      "repo": "notice",
+      "path": "civicnotice/__init__.py",
+      "sha256": "bbd01338724d14094a5fe8fc58148dbc0006aee9e6f74496dc4743de461d39f9",
+      "status": "changed",
+      "publication_sha256": "bbd01338724d14094a5fe8fc58148dbc0006aee9e6f74496dc4743de461d39f9"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/accessibility_review.py",
+      "repo": "notice",
+      "path": "civicnotice/accessibility_review.py",
+      "sha256": "dc4d689287ab6e738a0f589c92283fed62983e71d96173620ac6cca12c431781",
+      "status": "changed",
+      "publication_sha256": "dc4d689287ab6e738a0f589c92283fed62983e71d96173620ac6cca12c431781"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/archive_packet.py",
+      "repo": "notice",
+      "path": "civicnotice/archive_packet.py",
+      "sha256": "66bb57b4fcc26bf56ed5216d8b7bd746b42df2b4cedfc7999da1240539cf1ea1",
+      "status": "changed",
+      "publication_sha256": "66bb57b4fcc26bf56ed5216d8b7bd746b42df2b4cedfc7999da1240539cf1ea1"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/channel_plan.py",
+      "repo": "notice",
+      "path": "civicnotice/channel_plan.py",
+      "sha256": "0527afffa3e9ea623f488300fc5c9ea0243d1fc531baa594deb4dc60c8bf1020",
+      "status": "changed",
+      "publication_sha256": "0527afffa3e9ea623f488300fc5c9ea0243d1fc531baa594deb4dc60c8bf1020"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/deadline_tracker.py",
+      "repo": "notice",
+      "path": "civicnotice/deadline_tracker.py",
+      "sha256": "a316bf5ab85ecfddb549b804f706a7b4d2b5e45cea3bca293581bacef920f4a7",
+      "status": "changed",
+      "publication_sha256": "a316bf5ab85ecfddb549b804f706a7b4d2b5e45cea3bca293581bacef920f4a7"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/main.py",
+      "repo": "notice",
+      "path": "civicnotice/main.py",
+      "sha256": "3aec4b0007a662276afbb8527fab22fe796e4d64c3568fe688ac97dc63bc69bc",
+      "status": "changed",
+      "publication_sha256": "3aec4b0007a662276afbb8527fab22fe796e4d64c3568fe688ac97dc63bc69bc"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/notice_registry.py",
+      "repo": "notice",
+      "path": "civicnotice/notice_registry.py",
+      "sha256": "d4bfe8bbe04f7f3e9aa7114eb0d816714c600642df52a2b23efccfe9d7164628",
+      "status": "changed",
+      "publication_sha256": "d4bfe8bbe04f7f3e9aa7114eb0d816714c600642df52a2b23efccfe9d7164628"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/notice_templates.py",
+      "repo": "notice",
+      "path": "civicnotice/notice_templates.py",
+      "sha256": "83ead3a5b7e273bb7f781b0178a7274e40b4b2502af7400023cd9f21990731b5",
+      "status": "changed",
+      "publication_sha256": "83ead3a5b7e273bb7f781b0178a7274e40b4b2502af7400023cd9f21990731b5"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/persistence.py",
+      "repo": "notice",
+      "path": "civicnotice/persistence.py",
+      "sha256": "c9f4b2c92a8bd4c89a6d53c477645bbb570ab52190d1fc25d73136fa99d29eba",
+      "status": "same",
+      "publication_sha256": "c9f4b2c92a8bd4c89a6d53c477645bbb570ab52190d1fc25d73136fa99d29eba"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/public_ui.py",
+      "repo": "notice",
+      "path": "civicnotice/public_ui.py",
+      "sha256": "9d9293bc584e9745b3f14cf07f5e005679cd9f8178ad58c24cd5f7455cea27d3",
+      "status": "changed",
+      "publication_sha256": "9d9293bc584e9745b3f14cf07f5e005679cd9f8178ad58c24cd5f7455cea27d3"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/publication_check.py",
+      "repo": "notice",
+      "path": "civicnotice/publication_check.py",
+      "sha256": "f7e2e8505873bd0ebbfe4c906b7ecab8c447cf3fb4deaf8f378684514cf80d91",
+      "status": "changed",
+      "publication_sha256": "f7e2e8505873bd0ebbfe4c906b7ecab8c447cf3fb4deaf8f378684514cf80d91"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/publication_proof.py",
+      "repo": "notice",
+      "path": "civicnotice/publication_proof.py",
+      "sha256": "355716debb2d6ddceba579fd516f051181f3c68323d91d83e9c103ff9b53fe00",
+      "status": "changed",
+      "publication_sha256": "355716debb2d6ddceba579fd516f051181f3c68323d91d83e9c103ff9b53fe00"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/records_export.py",
+      "repo": "notice",
+      "path": "civicnotice/records_export.py",
+      "sha256": "ecc09b5047fbeca4adbeb0bc0a3e6b3a8766be035d84b540be839b9dcf66a264",
+      "status": "changed",
+      "publication_sha256": "ecc09b5047fbeca4adbeb0bc0a3e6b3a8766be035d84b540be839b9dcf66a264"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/statutory_rules.py",
+      "repo": "notice",
+      "path": "civicnotice/statutory_rules.py",
+      "sha256": "2175a45b7a75e1545a0ab05260f5493f2770d0d2237da0583354ad0aa010442b",
+      "status": "changed",
+      "publication_sha256": "2175a45b7a75e1545a0ab05260f5493f2770d0d2237da0583354ad0aa010442b"
+    },
+    {
+      "archive": "installed-owned-source/civicnotice/subscriber_delivery.py",
+      "repo": "notice",
+      "path": "civicnotice/subscriber_delivery.py",
+      "sha256": "a1664880a27cd5cac3e88f2539ba5db5f1938a2fa2044a113e2b55d294fcb7e7",
+      "status": "changed",
+      "publication_sha256": "a1664880a27cd5cac3e88f2539ba5db5f1938a2fa2044a113e2b55d294fcb7e7"
+    }
+  ],
+  "identity_note": "Publication commit integrates the already-built candidate; it is not claimed to be the original signing/build commit. Archive paths retain original byte hashes. Documentation entrypoints have a distribution addendum.",
+  "publication_note": "Original accepted bytes remain in the immutable source companion. Canonical sources normalize line endings. Release integration fixes remove a shadowed duplicate class, position imports for lint, format regression/acceptance tools and resolve the paired Core source dependency. Current audited manuals supersede build-time README copies. Each mapped file records both original and publication byte hashes."
+}

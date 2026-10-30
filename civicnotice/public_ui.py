@@ -1,17 +1,17 @@
-"""Static public UI shell for Townlight Notice v0.2.0."""
+"""Static public UI shell for CivicNotice v0.2.0."""
 
 from __future__ import annotations
 
 
 def render_public_lookup_page() -> str:
-    """Render the public-facing Townlight Notice sample page."""
+    """Render the public-facing CivicNotice sample page."""
 
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Townlight Notice Public Notice Support</title>
+<title>CivicNotice Public Notice Support</title>
 <style>
   :root { --ink:#17202a; --muted:#5c6470; --blue:#244f73; --green:#2f654c; --gold:#d8ad48; --line:#ccd5df; }
   * { box-sizing: border-box; }
@@ -47,10 +47,10 @@ def render_public_lookup_page() -> str:
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 <header>
-  <p class="eyebrow">Townlight / Townlight Notice public sample</p>
+  <p class="eyebrow">CivicSuite / CivicNotice public sample</p>
   <h1>Public notices with fewer missed deadlines.</h1>
-  <p class="lede">Townlight Notice demonstrates notice administration support: registry stubs, deadline plans, rule checks, templates, accessibility review, subscriber delivery planning, archive packets, and proof-preserving records exports without publishing official notice.</p>
-  <nav class="quick-links" aria-label="Townlight Notice API help">
+  <p class="lede">CivicNotice demonstrates notice administration support: registry stubs, deadline plans, rule checks, templates, accessibility review, subscriber delivery planning, archive packets, and proof-preserving records exports without publishing official notice.</p>
+  <nav class="quick-links" aria-label="CivicNotice API help">
     <a href="/docs">Interactive API docs</a>
     <a href="/openapi.json">OpenAPI schema</a>
   </nav>
@@ -68,13 +68,13 @@ def render_public_lookup_page() -> str:
         <ul><li>Confirm statutory authority, publication channel, lead time, and reviewer.</li><li>Route draft copy for clerk/legal review before publication.</li><li>Check accessibility, language access, subscriber delivery, proof, and archive handoff before closing the file.</li></ul>
       </div>
     </article>
-    <article class="card"><p class="kicker">Deadlines</p><h2>Lead-time reminders</h2><div class="result"><p>Townlight Notice calculates review milestones; staff verify the legal deadline.</p></div></article>
+    <article class="card"><p class="kicker">Deadlines</p><h2>Lead-time reminders</h2><div class="result"><p>CivicNotice calculates review milestones; staff verify the legal deadline.</p></div></article>
     <article class="card"><p class="kicker">Channels</p><h2>Publication path</h2><div class="result"><p>Channel helpers surface website, posting board, newspaper, agenda page, and accessibility review needs.</p></div></article>
     <article class="card"><p class="kicker">Proof</p><h2>Records-ready</h2><div class="result"><p>Exports preserve draft, final notice, approvals, proof, source matter, and reviewer metadata.</p></div></article>
-    <article class="card large"><p class="kicker">Boundary</p><h2>No official publication</h2><div class="result warning"><p>Townlight Notice does not determine legal sufficiency, publish official notices, provide legal advice, call live LLMs, write back to publication systems, or replace the notice system of record.</p></div></article>
+    <article class="card large"><p class="kicker">Boundary</p><h2>No official publication</h2><div class="result warning"><p>CivicNotice does not determine legal sufficiency, publish official notices, provide legal advice, call live LLMs, write back to publication systems, or replace the notice system of record.</p></div></article>
   </section>
 </main>
-<footer><p>Townlight Notice is part of the AGPL-3.0 Townlight open-source municipal AI project.</p></footer>
+<footer><p>CivicNotice is part of the Apache 2.0 CivicSuite open-source municipal AI project.</p></footer>
 </body>
 </html>
 """
