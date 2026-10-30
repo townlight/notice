@@ -8,7 +8,8 @@ version = "0.2.0"
 description = "Townlight Notice runtime foundation for notice registry, deadlines, rule checks, templates, proof workpapers, delivery planning, accessibility review, and archive handoffs."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
+license-files = ["LICENSE", "LICENSE-CODE"]
 authors = [
   { name = "CivicSuite contributors" }
 ]

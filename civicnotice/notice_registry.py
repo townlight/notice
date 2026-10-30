@@ -1,4 +1,4 @@
-"""Notice registry helpers for Townlight Notice v0.2.0."""
+"""Notice registry helpers for CivicNotice v0.2.0."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 
 DISCLAIMER = (
-    "Townlight Notice supports statutory notice administration, but staff remain "
+    "CivicNotice supports statutory notice administration, but staff remain "
     "responsible for deadlines, publication approvals, legal sufficiency, and "
     "the official notice record."
 )
