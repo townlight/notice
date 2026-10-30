@@ -17,7 +17,7 @@ def test_root_endpoint_states_runtime_boundary() -> None:
     data = response.json()
     assert data["name"] == "CivicNotice"
     assert data["status"] == "notice compliance foundation"
-    assert "Townlight Core-backed deadline plans" in data["message"]
+    assert "CivicCore-backed deadline plans" in data["message"]
     assert "archive/handoff packets" in data["message"]
     assert "database-backed registry/deadline/publication-proof workpapers" in data["message"]
     assert "official publication" in data["message"]
