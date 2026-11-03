@@ -2,17 +2,17 @@ from datetime import date
 
 from fastapi.testclient import TestClient
 
-from civicnotice.accessibility_review import build_accessibility_review
-from civicnotice.archive_packet import build_notice_archive_packet
-from civicnotice.channel_plan import plan_notice_channels
-from civicnotice.deadline_tracker import build_deadline_plan
-from civicnotice.main import app
-from civicnotice.notice_templates import build_notice_template
-from civicnotice.notice_registry import register_notice_stub
-from civicnotice.publication_check import build_publication_checklist
-from civicnotice.records_export import build_notice_records_export
-from civicnotice.statutory_rules import check_statutory_notice_requirements
-from civicnotice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
+from townlight_notice.accessibility_review import build_accessibility_review
+from townlight_notice.archive_packet import build_notice_archive_packet
+from townlight_notice.channel_plan import plan_notice_channels
+from townlight_notice.deadline_tracker import build_deadline_plan
+from townlight_notice.main import app
+from townlight_notice.notice_templates import build_notice_template
+from townlight_notice.notice_registry import register_notice_stub
+from townlight_notice.publication_check import build_publication_checklist
+from townlight_notice.records_export import build_notice_records_export
+from townlight_notice.statutory_rules import check_statutory_notice_requirements
+from townlight_notice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
 
 
 client = TestClient(app)
@@ -109,7 +109,7 @@ def test_notice_type_aliases_resolve_without_generic_downgrade() -> None:
 
 def test_unknown_notice_type_is_rejected_with_supported_choices() -> None:
     response = client.post(
-        "/api/v1/civicnotice/rule-check",
+        "/api/v1/townlight_notice/rule-check",
         json={
             "notice_type": "river festival notice",
             "event_date": "2026-08-01",
@@ -117,7 +117,7 @@ def test_unknown_notice_type_is_rejected_with_supported_choices() -> None:
         },
     )
     template = client.post(
-        "/api/v1/civicnotice/templates",
+        "/api/v1/townlight_notice/templates",
         json={
             "notice_type": "river festival notice",
             "matter_title": "River festival street closure",
@@ -206,7 +206,7 @@ def test_archive_packet_tracks_missing_and_complete_evidence() -> None:
     incomplete = build_notice_archive_packet(
         notice_id="hear-001",
         notice_type="planning hearing",
-        source_module="civicclerk",
+        source_module="townlight_meetings",
         source_record_id="meeting-42",
         registry_record_id="registry-1",
         deadline_plan_id="deadline-1",
@@ -214,7 +214,7 @@ def test_archive_packet_tracks_missing_and_complete_evidence() -> None:
     complete = build_notice_archive_packet(
         notice_id="hear-001",
         notice_type="planning hearing",
-        source_module="civicclerk",
+        source_module="townlight_meetings",
         source_record_id="meeting-42",
         registry_record_id="registry-1",
         deadline_plan_id="deadline-1",
@@ -229,7 +229,7 @@ def test_archive_packet_tracks_missing_and_complete_evidence() -> None:
     assert "publication proof" in incomplete.missing_items
     assert complete.readiness_status == "archive_packet_ready_for_staff_final_review"
     assert complete.missing_items == ()
-    assert complete.handoff_targets == ("civicclerk", "civicrecords")
+    assert complete.handoff_targets == ("townlight_meetings", "townlight_records")
 
 
 def test_records_export_preserves_notice_context() -> None:
@@ -244,7 +244,7 @@ def test_records_export_preserves_notice_context() -> None:
 
 def test_notice_support_apis_success_shape() -> None:
     registry = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={
             "notice_id": "hear-001",
             "notice_type": "public hearing",
@@ -252,15 +252,15 @@ def test_notice_support_apis_success_shape() -> None:
         },
     )
     deadlines = client.post(
-        "/api/v1/civicnotice/deadlines",
+        "/api/v1/townlight_notice/deadlines",
         json={"notice_type": "bid notice", "event_date": "2026-06-15", "lead_days": 14},
     )
     publication = client.post(
-        "/api/v1/civicnotice/publication-check",
+        "/api/v1/townlight_notice/publication-check",
         json={"notice_type": "vacancy notice", "channel": "newspaper"},
     )
     rule_check = client.post(
-        "/api/v1/civicnotice/rule-check",
+        "/api/v1/townlight_notice/rule-check",
         json={
             "notice_type": "planning hearing",
             "event_date": "2026-06-15",
@@ -277,23 +277,23 @@ def test_notice_support_apis_success_shape() -> None:
         },
     )
     template = client.post(
-        "/api/v1/civicnotice/templates",
+        "/api/v1/townlight_notice/templates",
         json={
             "notice_type": "planning hearing",
             "matter_title": "Planning hearing",
             "event_date": "2026-06-15",
             "location": "Council Chambers",
             "contact": "clerk@example.gov",
-            "source_module": "civicclerk",
+            "source_module": "townlight_meetings",
             "statutory_basis": "staff-entered basis",
         },
     )
     channels = client.post(
-        "/api/v1/civicnotice/channels",
+        "/api/v1/townlight_notice/channels",
         json={"notice_type": "public hearing", "audience": "residents"},
     )
     subscribers = client.post(
-        "/api/v1/civicnotice/subscribers/plan",
+        "/api/v1/townlight_notice/subscribers/plan",
         json={
             "notice_id": "hear-001",
             "notice_type": "public hearing",
@@ -312,7 +312,7 @@ def test_notice_support_apis_success_shape() -> None:
         },
     )
     accessibility = client.post(
-        "/api/v1/civicnotice/accessibility-review",
+        "/api/v1/townlight_notice/accessibility-review",
         json={
             "notice_id": "hear-001",
             "title": "Planning hearing",
@@ -325,11 +325,11 @@ def test_notice_support_apis_success_shape() -> None:
         },
     )
     archive = client.post(
-        "/api/v1/civicnotice/archive-packet",
+        "/api/v1/townlight_notice/archive-packet",
         json={
             "notice_id": "hear-001",
             "notice_type": "public hearing",
-            "source_module": "civicclerk",
+            "source_module": "townlight_meetings",
             "source_record_id": "meeting-42",
             "registry_record_id": "registry-1",
             "deadline_plan_id": "deadline-1",
@@ -342,7 +342,7 @@ def test_notice_support_apis_success_shape() -> None:
         },
     )
     export = client.post(
-        "/api/v1/civicnotice/export",
+        "/api/v1/townlight_notice/export",
         json={"title": "Planning hearing notice archive", "notice_id": "hear-001"},
     )
     assert registry.status_code == 200
@@ -355,7 +355,7 @@ def test_notice_support_apis_success_shape() -> None:
     assert rule_check.json()["deadline_status"] == "meets_minimum_lead_time"
     assert rule_check.json()["missing_channels"] == []
     assert template.status_code == 200
-    assert template.json()["source_module"] == "civicclerk"
+    assert template.json()["source_module"] == "townlight_meetings"
     assert template.json()["staff_review_required"] is True
     assert channels.status_code == 200
     assert channels.json()["staff_review_required"] is True
@@ -369,13 +369,13 @@ def test_notice_support_apis_success_shape() -> None:
     assert accessibility.json()["staff_review_required"] is True
     assert archive.status_code == 200
     assert archive.json()["readiness_status"] == "archive_packet_ready_for_staff_final_review"
-    assert archive.json()["handoff_targets"] == ["civicclerk", "civicrecords"]
+    assert archive.json()["handoff_targets"] == ["townlight_meetings", "townlight_records"]
     assert export.status_code == 200
     assert export.json()["notice_id"] == "hear-001"
 
 
 def test_public_ui_route_is_accessible_and_honest() -> None:
-    response = client.get("/civicnotice")
+    response = client.get("/townlight_notice")
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
     text = response.text
@@ -387,6 +387,6 @@ def test_public_ui_route_is_accessible_and_honest() -> None:
     assert 'href="/docs"' in text
     assert 'href="/openapi.json"' in text
     assert "Supported rule-check and template notice types include planning hearing" in text
-    assert "v0.2.0 notice compliance foundation" in text
+    assert "v0.3.0 notice compliance foundation" in text
     assert "does not determine legal sufficiency" in text
     assert "replace the notice system of record" in text

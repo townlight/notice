@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0] - Unreleased naming candidate
+
+- Rename the principal distribution/import to the Townlight Notice identities and pair with Townlight Core 1.3.0.dev2.
+- Connect the Windows notice workflow to durable content-bound review/approval, actual posting-proof files, verified archives and permission-checked Records handoff. Mechanical checks never substitute for staff approval.
+- Fresh-install candidate only; no legacy database upgrade or import shim. Existing data and historical release identities are preserved.
+- Signed Windows installer acceptance and publication remain pending; source implementation is not installed verification.
+
+
 All notable changes to CivicNotice will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).

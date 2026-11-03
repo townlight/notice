@@ -1,10 +1,10 @@
-"""Notice archive and handoff packets for CivicNotice v0.2.0."""
+"""Notice archive and handoff packets for Townlight Notice v0.3.0."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from civicnotice.notice_registry import DISCLAIMER
+from townlight_notice.notice_registry import DISCLAIMER
 
 
 @dataclass(frozen=True)
@@ -72,9 +72,9 @@ def build_notice_archive_packet(
 
 def _handoff_targets(source_module: str) -> tuple[str, ...]:
     normalized = source_module.strip().lower()
-    targets = ["civicrecords"]
-    if normalized == "civicclerk":
-        targets.insert(0, "civicclerk")
+    targets = ["townlight_records"]
+    if normalized == "townlight_meetings":
+        targets.insert(0, "townlight_meetings")
     elif normalized == "civicprocure":
         targets.insert(0, "civicprocure")
     elif normalized == "civicboards":

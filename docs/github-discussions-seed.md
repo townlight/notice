@@ -1,6 +1,6 @@
 # GitHub Discussions Seed Posts
 
-<a id="welcome-to-civicnotice"></a>
+<a id="welcome-to-townlight_notice"></a>
 
 ## Welcome to Townlight Notice
 

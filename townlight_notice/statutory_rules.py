@@ -1,11 +1,11 @@
-"""Deterministic statutory notice rule checks for CivicNotice v0.2.0."""
+"""Deterministic statutory notice rule checks for Townlight Notice v0.3.0."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date, timedelta
 
-from civicnotice.notice_registry import DISCLAIMER
+from townlight_notice.notice_registry import DISCLAIMER
 
 
 @dataclass(frozen=True)
@@ -119,14 +119,9 @@ def check_statutory_notice_requirements(
         if len(publication_dates) >= rule.required_publications
         else "publication_count_staff_review_required"
     )
-    basis_missing = "statutory basis" in rule.required_content and not statutory_basis.strip()
-    staff_review_required = bool(
-        missing_channels
-        or missing_content
-        or basis_missing
-        or deadline_status != "meets_minimum_lead_time"
-        or publication_count_status != "required_publication_count_met"
-    )
+    # These fixed mechanical checks cannot verify statutory authority or replace
+    # an actual reviewer. Passing them never approves a notice.
+    staff_review_required = True
     return StatutoryRuleCheck(
         notice_type=rule.notice_type,
         event_date=event_date,

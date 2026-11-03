@@ -4,39 +4,33 @@ import tomllib
 
 from fastapi.testclient import TestClient
 
-from civicnotice.archive_packet import build_notice_archive_packet
-from civicnotice.main import app
-from civicnotice.publication_proof import record_publication_proof
-from civicnotice.statutory_rules import RULE_PACKS, check_statutory_notice_requirements
-from civicnotice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
+from townlight_notice.archive_packet import build_notice_archive_packet
+from townlight_notice.main import app
+from townlight_notice.publication_proof import record_publication_proof
+from townlight_notice.statutory_rules import RULE_PACKS, check_statutory_notice_requirements
+from townlight_notice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
 
 
 client = TestClient(app)
 
 
-def test_civiccore_dependency_declares_release_wheel_hash() -> None:
-    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
-    civiccore_dependency = next(
-        dependency
-        for dependency in pyproject["project"]["dependencies"]
-        if dependency.startswith("civiccore @ ")
-    )
-    assert "releases/download/v1.2.0/civiccore-1.2.0-py3-none-any.whl" in civiccore_dependency
-    assert "#sha256=a94ce958e36fb03c8d961e4db4672ce5bcfa25765c57d75886e999cf15703ec7" in civiccore_dependency
+def test_townlight_core_dependency_uses_coordinated_candidate() -> None:
+    pyproject = tomllib.loads((Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8"))
+    assert "townlight-core==1.3.0.dev2" in pyproject["project"]["dependencies"]
 
 
 def test_openapi_documents_persistence_failure_contracts() -> None:
     openapi = client.get("/openapi.json").json()
     paths = openapi["paths"]
     persistence_gets = [
-        ("/api/v1/civicnotice/registry/{record_id}", "get"),
-        ("/api/v1/civicnotice/deadlines/{plan_id}", "get"),
-        ("/api/v1/civicnotice/publication-proof/{proof_id}", "get"),
+        ("/api/v1/townlight_notice/registry/{record_id}", "get"),
+        ("/api/v1/townlight_notice/deadlines/{plan_id}", "get"),
+        ("/api/v1/townlight_notice/publication-proof/{proof_id}", "get"),
     ]
     persistence_writes = [
-        ("/api/v1/civicnotice/registry", "post"),
-        ("/api/v1/civicnotice/deadlines", "post"),
-        ("/api/v1/civicnotice/publication-proof", "post"),
+        ("/api/v1/townlight_notice/registry", "post"),
+        ("/api/v1/townlight_notice/deadlines", "post"),
+        ("/api/v1/townlight_notice/publication-proof", "post"),
     ]
     for path, method in persistence_gets:
         responses = paths[path][method]["responses"]
@@ -61,7 +55,7 @@ def test_openapi_guides_first_use_notice_type_values() -> None:
 def test_api_rejects_fields_longer_than_storage_contract() -> None:
     too_long = "x" * 161
     response = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={"notice_id": too_long, "notice_type": "hearing", "owner": "Clerk"},
     )
     assert response.status_code == 422
@@ -106,10 +100,10 @@ def test_publication_proof_fallbacks_are_staff_reviewable() -> None:
 
 def test_archive_packet_handoff_targets_cover_source_modules() -> None:
     expected = {
-        "civicclerk": ("civicclerk", "civicrecords"),
-        "civicprocure": ("civicprocure", "civicrecords"),
-        "civicboards": ("civicboards", "civicrecords"),
-        "manual": ("manual staff archive", "civicrecords"),
+        "townlight_meetings": ("townlight_meetings", "townlight_records"),
+        "civicprocure": ("civicprocure", "townlight_records"),
+        "civicboards": ("civicboards", "townlight_records"),
+        "manual": ("manual staff archive", "townlight_records"),
     }
     for source_module, targets in expected.items():
         result = build_notice_archive_packet(

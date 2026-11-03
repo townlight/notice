@@ -26,19 +26,19 @@ required=(
   "MILESTONE_0_7_DONE.md"
   "docs/index.html"
   "pyproject.toml"
-  "civicnotice/__init__.py"
-  "civicnotice/main.py"
-  "civicnotice/accessibility_review.py"
-  "civicnotice/archive_packet.py"
-  "civicnotice/notice_registry.py"
-  "civicnotice/deadline_tracker.py"
-  "civicnotice/statutory_rules.py"
-  "civicnotice/notice_templates.py"
-  "civicnotice/publication_check.py"
-  "civicnotice/channel_plan.py"
-  "civicnotice/subscriber_delivery.py"
-  "civicnotice/records_export.py"
-  "civicnotice/public_ui.py"
+  "townlight_notice/__init__.py"
+  "townlight_notice/main.py"
+  "townlight_notice/accessibility_review.py"
+  "townlight_notice/archive_packet.py"
+  "townlight_notice/notice_registry.py"
+  "townlight_notice/deadline_tracker.py"
+  "townlight_notice/statutory_rules.py"
+  "townlight_notice/notice_templates.py"
+  "townlight_notice/publication_check.py"
+  "townlight_notice/channel_plan.py"
+  "townlight_notice/subscriber_delivery.py"
+  "townlight_notice/records_export.py"
+  "townlight_notice/public_ui.py"
 )
 
 echo "==> Required-artifact check"
@@ -61,7 +61,7 @@ bad_markers=(
   "production staff-review queues are available"
 )
 
-DOCS_PYTHON="${CIVICNOTICE_RELEASE_PYTHON:-python}"
+DOCS_PYTHON="${TOWNLIGHT_NOTICE_RELEASE_PYTHON:-python}"
 "${DOCS_PYTHON}" - <<'PY'
 from pathlib import Path
 

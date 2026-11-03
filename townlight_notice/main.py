@@ -1,49 +1,49 @@
-"""FastAPI runtime foundation for CivicNotice."""
+"""FastAPI runtime foundation for Townlight Notice."""
 
 from datetime import date
 import os
 
-from civiccore import __version__ as CIVICCORE_VERSION
+from townlight_core import __version__ as TOWNLIGHT_CORE_VERSION
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.exc import SQLAlchemyError
 
-from civicnotice import __version__
-from civicnotice.accessibility_review import build_accessibility_review
-from civicnotice.archive_packet import build_notice_archive_packet
-from civicnotice.channel_plan import plan_notice_channels
-from civicnotice.deadline_tracker import build_deadline_plan
-from civicnotice.notice_templates import build_notice_template
-from civicnotice.notice_registry import register_notice_stub
-from civicnotice.persistence import (
+from townlight_notice import __version__
+from townlight_notice.accessibility_review import build_accessibility_review
+from townlight_notice.archive_packet import build_notice_archive_packet
+from townlight_notice.channel_plan import plan_notice_channels
+from townlight_notice.deadline_tracker import build_deadline_plan
+from townlight_notice.notice_templates import build_notice_template
+from townlight_notice.notice_registry import register_notice_stub
+from townlight_notice.persistence import (
     NoticeWorkpaperRepository,
     StoredDeadlinePlan,
     StoredNoticeRecord,
     StoredPublicationProof,
 )
-from civicnotice.public_ui import render_public_lookup_page
-from civicnotice.publication_check import build_publication_checklist
-from civicnotice.records_export import build_notice_records_export
-from civicnotice.statutory_rules import check_statutory_notice_requirements, supported_notice_types
-from civicnotice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
+from townlight_notice.public_ui import render_public_lookup_page
+from townlight_notice.publication_check import build_publication_checklist
+from townlight_notice.records_export import build_notice_records_export
+from townlight_notice.statutory_rules import check_statutory_notice_requirements, supported_notice_types
+from townlight_notice.subscriber_delivery import Subscriber, build_subscriber_delivery_plan
 
 
 app = FastAPI(
-    title="CivicNotice",
+    title="Townlight Notice",
     version=__version__,
-    description="Public hearing, legal notice, bid notice, vacancy notice, and statutory publication deadline support for CivicSuite.",
+    description="Public hearing, legal notice, bid notice, vacancy notice, and statutory publication deadline support for Townlight.",
 )
 
 _workpaper_repository: NoticeWorkpaperRepository | None = None
 _workpaper_db_url: str | None = None
 PERSISTENCE_GET_RESPONSES = {
-    404: {"description": "Persisted CivicNotice workpaper record was not found."},
-    503: {"description": "CivicNotice workpaper persistence is not configured."},
+    404: {"description": "Persisted Townlight Notice workpaper record was not found."},
+    503: {"description": "Townlight Notice workpaper persistence is not configured."},
 }
 PERSISTENCE_WRITE_RESPONSES = {
-    403: {"description": "Durable CivicNotice write token is missing or invalid."},
-    503: {"description": "CivicNotice workpaper persistence or durable write guard is not configured."},
+    403: {"description": "Durable Townlight Notice write token is missing or invalid."},
+    503: {"description": "Townlight Notice workpaper persistence or durable write guard is not configured."},
 }
 SUPPORTED_NOTICE_TYPE_HELP = (
     "Supported rule/template notice types include planning hearing, public hearing, bid notice, "
@@ -111,7 +111,7 @@ class NoticeTemplateRequest(BaseModel):
     event_date: date = Field(examples=["2026-08-01"])
     location: str = Field(default="", max_length=1000, examples=["Council Chambers"])
     contact: str = Field(default="", max_length=160, examples=["clerk@example.gov"])
-    source_module: str = Field(default="manual", max_length=160, examples=["civicclerk"])
+    source_module: str = Field(default="manual", max_length=160, examples=["townlight_meetings"])
     statutory_basis: str = Field(default="", max_length=1000, examples=["staff-entered basis"])
 
 
@@ -187,18 +187,18 @@ def root() -> dict[str, str]:
     """Return current product state without overstating unshipped behavior."""
 
     return {
-        "name": "CivicNotice",
+        "name": "Townlight Notice",
         "version": __version__,
         "status": "notice compliance foundation",
         "message": (
-            "CivicNotice package, API foundation, sample notice registry, CivicCore-backed deadline plans, "
+            "Townlight Notice package, API foundation, sample notice registry, TownlightCore-backed deadline plans, "
             "statutory rule checks, notice drafting templates, accessibility and language-readiness packets, archive/handoff packets, publication-readiness checklist, channel planning, records export checklist, optional "
             "database-backed registry/deadline/publication-proof workpapers, and public UI foundation are online; official "
             "legal sufficiency decisions, official publication, legal "
             "advice, live LLM calls, publication-system write-back, and notice system-of-record integrations "
             "are not implemented yet."
         ),
-        "next_step": "Post-v0.2.0 roadmap: jurisdiction-specific statutory rule packs, live CivicClerk/CivicProcure/CivicNotice handoffs, and publication proof queues",
+        "next_step": "Post-v0.3.0 roadmap: jurisdiction-specific statutory rule packs, live TownlightMeetings/CivicProcure/Townlight Notice handoffs, and publication proof queues",
     }
 
 
@@ -208,26 +208,26 @@ def health() -> dict[str, str]:
 
     return {
         "status": "ok",
-        "service": "civicnotice",
+        "service": "townlight_notice",
         "version": __version__,
-        "civiccore_version": CIVICCORE_VERSION,
+        "townlight_core_version": TOWNLIGHT_CORE_VERSION,
     }
 
 
-@app.get("/civicnotice", response_class=HTMLResponse)
-def public_civicnotice_page() -> str:
+@app.get("/townlight_notice", response_class=HTMLResponse)
+def public_townlight_notice_page() -> str:
     """Return the public sample notice compliance support UI."""
 
     return render_public_lookup_page()
 
 
-@app.post("/api/v1/civicnotice/registry", responses=PERSISTENCE_WRITE_RESPONSES)
+@app.post("/api/v1/townlight_notice/registry", responses=PERSISTENCE_WRITE_RESPONSES)
 def notice_registry(
     request: NoticeRegistryRequest,
-    x_civicnotice_write_token: str | None = Header(default=None),
+    x_townlight_notice_write_token: str | None = Header(default=None),
 ) -> dict[str, object]:
     if _workpaper_database_url() is not None:
-        _authorize_persistent_write(x_civicnotice_write_token)
+        _authorize_persistent_write(x_townlight_notice_write_token)
         return _with_persistence_errors(
             lambda: _stored_notice_response(
                 _get_workpaper_repository().create_notice_record(
@@ -246,14 +246,14 @@ def notice_registry(
     return payload
 
 
-@app.get("/api/v1/civicnotice/registry/{record_id}", responses=PERSISTENCE_GET_RESPONSES)
+@app.get("/api/v1/townlight_notice/registry/{record_id}", responses=PERSISTENCE_GET_RESPONSES)
 def get_notice_registry(record_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice workpaper persistence is not configured.",
-                "fix": "Set CIVICNOTICE_WORKPAPER_DB_URL to retrieve persisted notice registry records.",
+                "message": "Townlight Notice workpaper persistence is not configured.",
+                "fix": "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL to retrieve persisted notice registry records.",
             },
         )
     stored = _with_persistence_errors(lambda: _get_workpaper_repository().get_notice_record(record_id))
@@ -262,19 +262,19 @@ def get_notice_registry(record_id: str) -> dict[str, object]:
             status_code=404,
             detail={
                 "message": "Notice registry record not found.",
-                "fix": "Use a record_id returned by POST /api/v1/civicnotice/registry.",
+                "fix": "Use a record_id returned by POST /api/v1/townlight_notice/registry.",
             },
         )
     return _stored_notice_response(stored)
 
 
-@app.post("/api/v1/civicnotice/deadlines", responses=PERSISTENCE_WRITE_RESPONSES)
+@app.post("/api/v1/townlight_notice/deadlines", responses=PERSISTENCE_WRITE_RESPONSES)
 def deadline_plan(
     request: DeadlineRequest,
-    x_civicnotice_write_token: str | None = Header(default=None),
+    x_townlight_notice_write_token: str | None = Header(default=None),
 ) -> dict[str, object]:
     if _workpaper_database_url() is not None:
-        _authorize_persistent_write(x_civicnotice_write_token)
+        _authorize_persistent_write(x_townlight_notice_write_token)
         return _with_persistence_errors(
             lambda: _stored_deadline_response(
                 _get_workpaper_repository().create_deadline_plan(
@@ -293,14 +293,14 @@ def deadline_plan(
     return payload
 
 
-@app.get("/api/v1/civicnotice/deadlines/{plan_id}", responses=PERSISTENCE_GET_RESPONSES)
+@app.get("/api/v1/townlight_notice/deadlines/{plan_id}", responses=PERSISTENCE_GET_RESPONSES)
 def get_deadline_plan(plan_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice workpaper persistence is not configured.",
-                "fix": "Set CIVICNOTICE_WORKPAPER_DB_URL to retrieve persisted deadline plans.",
+                "message": "Townlight Notice workpaper persistence is not configured.",
+                "fix": "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL to retrieve persisted deadline plans.",
             },
         )
     stored = _with_persistence_errors(lambda: _get_workpaper_repository().get_deadline_plan(plan_id))
@@ -309,26 +309,26 @@ def get_deadline_plan(plan_id: str) -> dict[str, object]:
             status_code=404,
             detail={
                 "message": "Deadline plan record not found.",
-                "fix": "Use a plan_id returned by POST /api/v1/civicnotice/deadlines.",
+                "fix": "Use a plan_id returned by POST /api/v1/townlight_notice/deadlines.",
             },
         )
     return _stored_deadline_response(stored)
 
 
-@app.post("/api/v1/civicnotice/publication-proof", responses=PERSISTENCE_WRITE_RESPONSES)
+@app.post("/api/v1/townlight_notice/publication-proof", responses=PERSISTENCE_WRITE_RESPONSES)
 def publication_proof(
     request: PublicationProofRequest,
-    x_civicnotice_write_token: str | None = Header(default=None),
+    x_townlight_notice_write_token: str | None = Header(default=None),
 ) -> dict[str, object]:
     if _workpaper_database_url() is None:
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice workpaper persistence is not configured.",
-                "fix": "Set CIVICNOTICE_WORKPAPER_DB_URL to store durable publication proof records.",
+                "message": "Townlight Notice workpaper persistence is not configured.",
+                "fix": "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL to store durable publication proof records.",
             },
         )
-    _authorize_persistent_write(x_civicnotice_write_token)
+    _authorize_persistent_write(x_townlight_notice_write_token)
     stored = _with_persistence_errors(
         lambda: _get_workpaper_repository().create_publication_proof(
             notice_id=request.notice_id,
@@ -347,15 +347,15 @@ def publication_proof(
 
 
 @app.get(
-    "/api/v1/civicnotice/publication-proof/{proof_id}", responses=PERSISTENCE_GET_RESPONSES
+    "/api/v1/townlight_notice/publication-proof/{proof_id}", responses=PERSISTENCE_GET_RESPONSES
 )
 def get_publication_proof(proof_id: str) -> dict[str, object]:
     if _workpaper_database_url() is None:
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice workpaper persistence is not configured.",
-                "fix": "Set CIVICNOTICE_WORKPAPER_DB_URL to retrieve persisted publication proof records.",
+                "message": "Townlight Notice workpaper persistence is not configured.",
+                "fix": "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL to retrieve persisted publication proof records.",
             },
         )
     stored = _with_persistence_errors(
@@ -366,13 +366,13 @@ def get_publication_proof(proof_id: str) -> dict[str, object]:
             status_code=404,
             detail={
                 "message": "Publication proof record not found.",
-                "fix": "Use a proof_id returned by POST /api/v1/civicnotice/publication-proof.",
+                "fix": "Use a proof_id returned by POST /api/v1/townlight_notice/publication-proof.",
             },
         )
     return _stored_publication_proof_response(stored)
 
 
-@app.post("/api/v1/civicnotice/publication-check")
+@app.post("/api/v1/townlight_notice/publication-check")
 def publication_checklist(request: PublicationRequest) -> dict[str, object]:
     return build_publication_checklist(
         notice_type=request.notice_type,
@@ -380,7 +380,7 @@ def publication_checklist(request: PublicationRequest) -> dict[str, object]:
     ).__dict__
 
 
-@app.post("/api/v1/civicnotice/rule-check")
+@app.post("/api/v1/townlight_notice/rule-check")
 def rule_check(request: RuleCheckRequest) -> dict[str, object]:
     try:
         result = check_statutory_notice_requirements(
@@ -400,7 +400,7 @@ def rule_check(request: RuleCheckRequest) -> dict[str, object]:
     return payload
 
 
-@app.post("/api/v1/civicnotice/templates")
+@app.post("/api/v1/townlight_notice/templates")
 def notice_template(request: NoticeTemplateRequest) -> dict[str, object]:
     try:
         result = build_notice_template(
@@ -417,7 +417,7 @@ def notice_template(request: NoticeTemplateRequest) -> dict[str, object]:
     return result.__dict__
 
 
-@app.post("/api/v1/civicnotice/channels")
+@app.post("/api/v1/townlight_notice/channels")
 def channel_plan(request: ChannelRequest) -> dict[str, object]:
     return plan_notice_channels(
         notice_type=request.notice_type,
@@ -425,7 +425,7 @@ def channel_plan(request: ChannelRequest) -> dict[str, object]:
     ).__dict__
 
 
-@app.post("/api/v1/civicnotice/subscribers/plan")
+@app.post("/api/v1/townlight_notice/subscribers/plan")
 def subscriber_delivery_plan(request: SubscriberDeliveryRequest) -> dict[str, object]:
     subscribers = tuple(
         Subscriber(
@@ -447,7 +447,7 @@ def subscriber_delivery_plan(request: SubscriberDeliveryRequest) -> dict[str, ob
     ).__dict__
 
 
-@app.post("/api/v1/civicnotice/accessibility-review")
+@app.post("/api/v1/townlight_notice/accessibility-review")
 def accessibility_review(request: AccessibilityReviewRequest) -> dict[str, object]:
     return build_accessibility_review(
         notice_id=request.notice_id,
@@ -461,7 +461,7 @@ def accessibility_review(request: AccessibilityReviewRequest) -> dict[str, objec
     ).__dict__
 
 
-@app.post("/api/v1/civicnotice/archive-packet")
+@app.post("/api/v1/townlight_notice/archive-packet")
 def archive_packet(request: ArchivePacketRequest) -> dict[str, object]:
     return build_notice_archive_packet(
         notice_id=request.notice_id,
@@ -479,7 +479,7 @@ def archive_packet(request: ArchivePacketRequest) -> dict[str, object]:
     ).__dict__
 
 
-@app.post("/api/v1/civicnotice/export")
+@app.post("/api/v1/townlight_notice/export")
 def records_export(request: RecordsExportRequest) -> dict[str, object]:
     return build_notice_records_export(
         notice_id=request.notice_id,
@@ -489,11 +489,11 @@ def records_export(request: RecordsExportRequest) -> dict[str, object]:
 
 
 def _workpaper_database_url() -> str | None:
-    return os.environ.get("CIVICNOTICE_WORKPAPER_DB_URL")
+    return os.environ.get("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
 
 
 def _trusted_write_token() -> str | None:
-    return os.environ.get("CIVICNOTICE_TRUSTED_WRITE_TOKEN")
+    return os.environ.get("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN")
 
 
 def _authorize_persistent_write(provided_token: str | None) -> None:
@@ -502,16 +502,16 @@ def _authorize_persistent_write(provided_token: str | None) -> None:
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice durable write guard is not configured.",
-                "fix": "Set CIVICNOTICE_TRUSTED_WRITE_TOKEN before enabling persistence-backed writes.",
+                "message": "Townlight Notice durable write guard is not configured.",
+                "fix": "Set TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN before enabling persistence-backed writes.",
             },
         )
     if provided_token != expected_token:
         raise HTTPException(
             status_code=403,
             detail={
-                "message": "CivicNotice durable write token is missing or invalid.",
-                "fix": "Send the configured X-CivicNotice-Write-Token header for persistence-backed writes.",
+                "message": "Townlight Notice durable write token is missing or invalid.",
+                "fix": "Send the configured X-Townlight-Notice-Write-Token header for persistence-backed writes.",
             },
         )
 
@@ -520,7 +520,7 @@ def _get_workpaper_repository() -> NoticeWorkpaperRepository:
     global _workpaper_db_url, _workpaper_repository
     db_url = _workpaper_database_url()
     if db_url is None:
-        raise RuntimeError("CIVICNOTICE_WORKPAPER_DB_URL is not configured.")
+        raise RuntimeError("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL is not configured.")
     if _workpaper_repository is None or db_url != _workpaper_db_url:
         _dispose_workpaper_repository()
         _workpaper_db_url = db_url
@@ -536,8 +536,8 @@ def _with_persistence_errors(operation):
         raise HTTPException(
             status_code=503,
             detail={
-                "message": "CivicNotice workpaper persistence is configured but unavailable.",
-                "fix": "Verify CIVICNOTICE_WORKPAPER_DB_URL, database reachability, credentials, and schema permissions.",
+                "message": "Townlight Notice workpaper persistence is configured but unavailable.",
+                "fix": "Verify TOWNLIGHT_NOTICE_WORKPAPER_DB_URL, database reachability, credentials, and schema permissions.",
             },
         ) from exc
 

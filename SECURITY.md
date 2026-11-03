@@ -1,6 +1,6 @@
 # Security
 
-Townlight Notice is early-stage software. Current version: `0.2.0`. Do not deploy it as a system of record until a release explicitly says it is production-ready.
+Townlight Notice is early-stage software. Current version: `0.3.0`. Do not deploy it as a system of record until a release explicitly says it is production-ready.
 
 ## Supported Versions
 
@@ -18,7 +18,7 @@ Do not include live municipal secrets, resident data, publication affidavits, su
 ## What To Include
 
 - Affected Townlight Notice version and commit, if known.
-- Whether `CIVICNOTICE_WORKPAPER_DB_URL` or `CIVICNOTICE_TRUSTED_WRITE_TOKEN` was configured.
+- Whether `TOWNLIGHT_NOTICE_WORKPAPER_DB_URL` or `TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN` was configured.
 - Steps to reproduce with synthetic data only.
 - Expected and observed behavior.
 - Impact assessment, including whether durable workpaper writes or public notice artifacts are exposed.

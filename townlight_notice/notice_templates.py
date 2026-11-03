@@ -1,12 +1,12 @@
-"""Notice drafting templates for CivicNotice v0.2.0."""
+"""Notice drafting templates for Townlight Notice v0.3.0."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
 
-from civicnotice.notice_registry import DISCLAIMER
-from civicnotice.statutory_rules import resolve_notice_rule
+from townlight_notice.notice_registry import DISCLAIMER
+from townlight_notice.statutory_rules import resolve_notice_rule
 
 
 @dataclass(frozen=True)
