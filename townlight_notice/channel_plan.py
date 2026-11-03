@@ -1,10 +1,10 @@
-"""Notice channel planning helpers for CivicNotice v0.2.0."""
+"""Notice channel planning helpers for Townlight Notice v0.3.0."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from civicnotice.notice_registry import DISCLAIMER
+from townlight_notice.notice_registry import DISCLAIMER
 
 
 @dataclass(frozen=True)

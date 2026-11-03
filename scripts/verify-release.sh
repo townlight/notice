@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="0.2.0"
-CIVICCORE_WHEEL_URL="https://github.com/townlight/core/releases/download/v1.2.0/civiccore-1.2.0-py3-none-any.whl"
-CIVICCORE_WHEEL_SHA256="a94ce958e36fb03c8d961e4db4672ce5bcfa25765c57d75886e999cf15703ec7"
+VERSION="0.3.0"
 
 find_python() {
   local candidates=()
-  if [[ -n "${CIVICNOTICE_RELEASE_PYTHON:-}" ]]; then
-    candidates+=("${CIVICNOTICE_RELEASE_PYTHON}")
+  if [[ -n "${TOWNLIGHT_NOTICE_RELEASE_PYTHON:-}" ]]; then
+    candidates+=("${TOWNLIGHT_NOTICE_RELEASE_PYTHON}")
   fi
   command -v python >/dev/null 2>&1 && candidates+=("$(command -v python)")
   command -v python3 >/dev/null 2>&1 && candidates+=("$(command -v python3)")
@@ -42,12 +40,12 @@ ${PYTHON_BIN} - <<'PY'
 from pathlib import Path
 import tomllib
 
-version = "0.2.0"
+version = "0.3.0"
 root = Path(".")
 pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
 assert pyproject["project"]["version"] == version, pyproject["project"]["version"]
 namespace: dict[str, str] = {}
-exec((root / "civicnotice" / "__init__.py").read_text(encoding="utf-8"), namespace)
+exec((root / "townlight_notice" / "__init__.py").read_text(encoding="utf-8"), namespace)
 assert namespace["__version__"] == version, namespace["__version__"]
 for path in [
     "README.md",
@@ -58,48 +56,33 @@ for path in [
     "SECURITY.md",
 ]:
     text = (root / path).read_text(encoding="utf-8")
-    assert "0.2.0" in text, f"missing release version in {path}"
+    assert "0.3.0" in text, f"missing release version in {path}"
     assert "0.1.0.dev0" not in text, f"stale dev version in {path}"
 print("PASS: version surfaces synchronized")
 PY
 
-echo "==> CivicCore wheel provenance"
-${PYTHON_BIN} - <<PY
-from pathlib import Path
-from urllib.request import urlopen
-import hashlib
-import tempfile
-
-url = "${CIVICCORE_WHEEL_URL}"
-expected = "${CIVICCORE_WHEEL_SHA256}"
-with urlopen(url, timeout=30) as response:
-    data = response.read()
-actual = hashlib.sha256(data).hexdigest()
-assert actual == expected, actual
-path = Path(tempfile.gettempdir()) / "civiccore-1.2.0-py3-none-any.whl.sha256"
-path.write_text(f"{actual}  civiccore-1.2.0-py3-none-any.whl\\n", encoding="utf-8")
-print("PASS: CivicCore 1.2.0 wheel SHA-256 verified")
-PY
+echo "==> Exact candidate Core source/artifact provenance"
+${PYTHON_BIN} scripts/install-core-candidate.py --verify-installed
 
 echo "==> Test suite"
-if [[ -z "${CIVICNOTICE_POSTGRES_TEST_URL:-}" ]]; then
-  echo "FAIL: CIVICNOTICE_POSTGRES_TEST_URL is required for the release gate so PostgreSQL persistence coverage cannot be skipped." >&2
+if [[ -z "${TOWNLIGHT_NOTICE_POSTGRES_TEST_URL:-}" ]]; then
+  echo "FAIL: TOWNLIGHT_NOTICE_POSTGRES_TEST_URL is required for the release gate so PostgreSQL persistence coverage cannot be skipped." >&2
   exit 1
 fi
 ${PYTHON_BIN} - <<'PY'
 import os
-assert os.environ.get("CIVICNOTICE_POSTGRES_TEST_URL"), (
-    "CIVICNOTICE_POSTGRES_TEST_URL is not visible to the selected Python interpreter."
+assert os.environ.get("TOWNLIGHT_NOTICE_POSTGRES_TEST_URL"), (
+    "TOWNLIGHT_NOTICE_POSTGRES_TEST_URL is not visible to the selected Python interpreter."
 )
 print("PASS: PostgreSQL test URL is visible to the selected Python interpreter")
 PY
-${PYTHON_BIN} -m pytest -q --cov=civicnotice --cov-branch --cov-fail-under=90
+${PYTHON_BIN} -m pytest -q --cov=townlight_notice --cov-branch --cov-fail-under=90
 
 echo "==> Documentation gate"
 bash scripts/verify-docs.sh
 
 echo "==> Placeholder import gate"
-${PYTHON_BIN} scripts/check-civiccore-placeholder-imports.py
+${PYTHON_BIN} scripts/check-townlight_core-placeholder-imports.py
 
 echo "==> Ruff"
 ${PYTHON_BIN} -m ruff check .
@@ -112,8 +95,8 @@ from pathlib import Path
 import hashlib
 
 dist = Path("dist")
-wheel = dist / "civicnotice-0.2.0-py3-none-any.whl"
-sdist = dist / "civicnotice-0.2.0.tar.gz"
+wheel = dist / "townlight_notice-0.3.0-py3-none-any.whl"
+sdist = dist / "townlight_notice-0.3.0.tar.gz"
 assert wheel.exists(), f"missing {wheel}"
 assert sdist.exists(), f"missing {sdist}"
 lines = []

@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION="0.2.0"
+CIVICCORE_WHEEL_URL="https://github.com/townlight/core/releases/download/v1.2.0/civiccore-1.2.0-py3-none-any.whl"
+CIVICCORE_WHEEL_SHA256="a94ce958e36fb03c8d961e4db4672ce5bcfa25765c57d75886e999cf15703ec7"
+
+find_python() {
+  local candidates=()
+  if [[ -n "${CIVICNOTICE_RELEASE_PYTHON:-}" ]]; then
+    candidates+=("${CIVICNOTICE_RELEASE_PYTHON}")
+  fi
+  command -v python >/dev/null 2>&1 && candidates+=("$(command -v python)")
+  command -v python3 >/dev/null 2>&1 && candidates+=("$(command -v python3)")
+  command -v py >/dev/null 2>&1 && candidates+=("py -3")
+  [[ -x "/c/Windows/py.exe" ]] && candidates+=("/c/Windows/py.exe -3")
+  [[ -x "/mnt/c/Windows/py.exe" ]] && candidates+=("/mnt/c/Windows/py.exe -3")
+  if command -v powershell.exe >/dev/null 2>&1 && command -v wslpath >/dev/null 2>&1; then
+    local win_python
+    win_python="$(powershell.exe -NoProfile -Command "(Get-Command python -ErrorAction SilentlyContinue).Source" 2>/dev/null | tr -d '\r' | head -n 1)"
+    if [[ -n "$win_python" ]]; then
+      candidates+=("$(wslpath -u "$win_python")")
+    fi
+  fi
+
+  for candidate in "${candidates[@]}"; do
+    if ${candidate} -c "import pytest, ruff, build" >/dev/null 2>&1; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
+PYTHON_BIN="$(find_python)" || {
+  echo "FAIL: Python launcher not found. Install Python or add python/python3/py to PATH." >&2
+  exit 1
+}
+
+echo "==> Version surface check"
+${PYTHON_BIN} - <<'PY'
+from pathlib import Path
+import tomllib
+
+version = "0.2.0"
+root = Path(".")
+pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+assert pyproject["project"]["version"] == version, pyproject["project"]["version"]
+namespace: dict[str, str] = {}
+exec((root / "civicnotice" / "__init__.py").read_text(encoding="utf-8"), namespace)
+assert namespace["__version__"] == version, namespace["__version__"]
+for path in [
+    "README.md",
+    "README.txt",
+    "USER-MANUAL.md",
+    "CHANGELOG.md",
+    "docs/index.html",
+    "SECURITY.md",
+]:
+    text = (root / path).read_text(encoding="utf-8")
+    assert "0.2.0" in text, f"missing release version in {path}"
+    assert "0.1.0.dev0" not in text, f"stale dev version in {path}"
+print("PASS: version surfaces synchronized")
+PY
+
+echo "==> CivicCore wheel provenance"
+${PYTHON_BIN} - <<PY
+from pathlib import Path
+from urllib.request import urlopen
+import hashlib
+import tempfile
+
+url = "${CIVICCORE_WHEEL_URL}"
+expected = "${CIVICCORE_WHEEL_SHA256}"
+with urlopen(url, timeout=30) as response:
+    data = response.read()
+actual = hashlib.sha256(data).hexdigest()
+assert actual == expected, actual
+path = Path(tempfile.gettempdir()) / "civiccore-1.2.0-py3-none-any.whl.sha256"
+path.write_text(f"{actual}  civiccore-1.2.0-py3-none-any.whl\\n", encoding="utf-8")
+print("PASS: CivicCore 1.2.0 wheel SHA-256 verified")
+PY
+
+echo "==> Test suite"
+if [[ -z "${CIVICNOTICE_POSTGRES_TEST_URL:-}" ]]; then
+  echo "FAIL: CIVICNOTICE_POSTGRES_TEST_URL is required for the release gate so PostgreSQL persistence coverage cannot be skipped." >&2
+  exit 1
+fi
+${PYTHON_BIN} - <<'PY'
+import os
+assert os.environ.get("CIVICNOTICE_POSTGRES_TEST_URL"), (
+    "CIVICNOTICE_POSTGRES_TEST_URL is not visible to the selected Python interpreter."
+)
+print("PASS: PostgreSQL test URL is visible to the selected Python interpreter")
+PY
+${PYTHON_BIN} -m pytest -q --cov=civicnotice --cov-branch --cov-fail-under=90
+
+echo "==> Documentation gate"
+bash scripts/verify-docs.sh
+
+echo "==> Placeholder import gate"
+${PYTHON_BIN} scripts/check-civiccore-placeholder-imports.py
+
+echo "==> Ruff"
+${PYTHON_BIN} -m ruff check .
+
+echo "==> Build artifacts"
+rm -rf dist
+${PYTHON_BIN} -m build
+${PYTHON_BIN} - <<'PY'
+from pathlib import Path
+import hashlib
+
+dist = Path("dist")
+wheel = dist / "civicnotice-0.2.0-py3-none-any.whl"
+sdist = dist / "civicnotice-0.2.0.tar.gz"
+assert wheel.exists(), f"missing {wheel}"
+assert sdist.exists(), f"missing {sdist}"
+lines = []
+for path in [wheel, sdist]:
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    lines.append(f"{digest}  {path.name}\n")
+(dist / "SHA256SUMS.txt").write_text("".join(lines), encoding="utf-8")
+print("PASS: build artifacts and SHA256SUMS.txt created")
+PY
+
+echo "VERIFY-RELEASE: PASSED"

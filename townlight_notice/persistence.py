@@ -7,9 +7,9 @@ from uuid import uuid4
 import sqlalchemy as sa
 from sqlalchemy import Engine, create_engine
 
-from civicnotice.deadline_tracker import build_deadline_plan
-from civicnotice.notice_registry import register_notice_stub
-from civicnotice.publication_proof import record_publication_proof
+from townlight_notice.deadline_tracker import build_deadline_plan
+from townlight_notice.notice_registry import register_notice_stub
+from townlight_notice.publication_proof import record_publication_proof
 
 
 metadata = sa.MetaData()
@@ -24,7 +24,7 @@ notice_registry_records = sa.Table(
     sa.Column("registry_notes", sa.JSON(), nullable=False),
     sa.Column("disclaimer", sa.Text(), nullable=False),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-    schema="civicnotice",
+    schema="townlight_notice",
 )
 
 deadline_plan_records = sa.Table(
@@ -37,7 +37,7 @@ deadline_plan_records = sa.Table(
     sa.Column("staff_review_required", sa.Boolean(), nullable=False),
     sa.Column("disclaimer", sa.Text(), nullable=False),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-    schema="civicnotice",
+    schema="townlight_notice",
 )
 
 publication_proof_records = sa.Table(
@@ -58,7 +58,7 @@ publication_proof_records = sa.Table(
     sa.Column("compliance_status", sa.String(160), nullable=False),
     sa.Column("disclaimer", sa.Text(), nullable=False),
     sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-    schema="civicnotice",
+    schema="townlight_notice",
 )
 
 
@@ -107,11 +107,11 @@ class NoticeWorkpaperRepository:
     def __init__(self, *, db_url: str | None = None, engine: Engine | None = None) -> None:
         base_engine = engine or create_engine(db_url or "sqlite+pysqlite:///:memory:", future=True)
         if base_engine.dialect.name == "sqlite":
-            self.engine = base_engine.execution_options(schema_translate_map={"civicnotice": None})
+            self.engine = base_engine.execution_options(schema_translate_map={"townlight_notice": None})
         else:
             self.engine = base_engine
             with self.engine.begin() as connection:
-                connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS civicnotice"))
+                connection.execute(sa.text("CREATE SCHEMA IF NOT EXISTS townlight_notice"))
         metadata.create_all(self.engine)
 
     def create_notice_record(

@@ -1,4 +1,4 @@
-<a id="civicnotice-reconciliation"></a>
+<a id="townlight_notice-reconciliation"></a>
 
 # Townlight Notice Reconciliation
 
@@ -7,5 +7,5 @@
 | Unified spec Townlight Notice catalog entry | notice registry, deadline tracking, deterministic statutory rule checks, notice drafting templates, publication readiness tracking, channel planning, and notice/records export checklists represented through deterministic helpers. |
 | AGPL-3.0-only code licensing | `LICENSE-CODE` and package metadata use AGPL-3.0-only. |
 | Documentation licensing | `LICENSE-DOCS` uses CC BY 4.0. |
-| Townlight Core dependency | `pyproject.toml` pins the `civiccore v1.2.0` release wheel. |
+| Townlight Core dependency | `pyproject.toml` pins the `townlight_core v1.2.0` release wheel. |
 | Shipped/planned honesty | Legal sufficiency decisions, legal advice, live LLM calls, official notice publication, publication-system write-back, and notice system-of-record integrations remain explicitly unshipped. |

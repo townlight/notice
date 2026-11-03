@@ -1,12 +1,12 @@
-"""Publication deadline helpers for CivicNotice v0.2.0."""
+"""Publication deadline helpers for Townlight Notice v0.3.0."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
 
-from civiccore.notifications import build_deadline_plan as build_civiccore_deadline_plan
-from civicnotice.notice_registry import DISCLAIMER
+from townlight_core.notifications import build_deadline_plan as build_townlight_core_deadline_plan
+from townlight_notice.notice_registry import DISCLAIMER
 
 
 @dataclass(frozen=True)
@@ -21,7 +21,7 @@ class DeadlinePlan:
 def build_deadline_plan(*, notice_type: str, event_date: date, lead_days: int = 10) -> DeadlinePlan:
     """Build deterministic publication reminders without declaring legal sufficiency."""
 
-    shared_plan = build_civiccore_deadline_plan(
+    shared_plan = build_townlight_core_deadline_plan(
         notice_type=notice_type,
         event_date=event_date,
         lead_days=lead_days,

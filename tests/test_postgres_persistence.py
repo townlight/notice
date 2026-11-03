@@ -6,18 +6,18 @@ import os
 import pytest
 import sqlalchemy as sa
 
-from civicnotice.persistence import NoticeWorkpaperRepository
+from townlight_notice.persistence import NoticeWorkpaperRepository
 
 
 @pytest.mark.skipif(
-    not os.environ.get("CIVICNOTICE_POSTGRES_TEST_URL"),
-    reason="CIVICNOTICE_POSTGRES_TEST_URL is required for PostgreSQL persistence coverage.",
+    not os.environ.get("TOWNLIGHT_NOTICE_POSTGRES_TEST_URL"),
+    reason="TOWNLIGHT_NOTICE_POSTGRES_TEST_URL is required for PostgreSQL persistence coverage.",
 )
 def test_postgres_persistence_creates_schema_and_round_trips_workpapers() -> None:
-    db_url = os.environ["CIVICNOTICE_POSTGRES_TEST_URL"]
+    db_url = os.environ["TOWNLIGHT_NOTICE_POSTGRES_TEST_URL"]
     engine = sa.create_engine(db_url, future=True)
     with engine.begin() as connection:
-        connection.execute(sa.text("DROP SCHEMA IF EXISTS civicnotice CASCADE"))
+        connection.execute(sa.text("DROP SCHEMA IF EXISTS townlight_notice CASCADE"))
     engine.dispose()
 
     repository = NoticeWorkpaperRepository(db_url=db_url)
@@ -30,7 +30,7 @@ def test_postgres_persistence_creates_schema_and_round_trips_workpapers() -> Non
     proof = repository.create_publication_proof(
         notice_id="PG-N-1",
         notice_type="planning hearing",
-        source_module="civicclerk",
+        source_module="townlight_meetings",
         source_record_id="meeting-pg-1",
         channel="newspaper",
         published_at="2026-05-20T09:00:00-06:00",
@@ -42,11 +42,11 @@ def test_postgres_persistence_creates_schema_and_round_trips_workpapers() -> Non
 
     assert repository.get_notice_record(record.record_id).notice_id == "PG-N-1"
     assert repository.get_deadline_plan(plan.plan_id).event_date == date(2026, 6, 15)
-    assert repository.get_publication_proof(proof.proof_id).source_module == "civicclerk"
+    assert repository.get_publication_proof(proof.proof_id).source_module == "townlight_meetings"
 
     with repository.engine.begin() as connection:
         schema_exists = connection.execute(
-            sa.text("select exists(select 1 from information_schema.schemata where schema_name='civicnotice')")
+            sa.text("select exists(select 1 from information_schema.schemata where schema_name='townlight_notice')")
         ).scalar_one()
     repository.engine.dispose()
     assert schema_exists is True

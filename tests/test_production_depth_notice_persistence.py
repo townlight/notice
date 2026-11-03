@@ -5,15 +5,15 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from civicnotice.main import app, _dispose_workpaper_repository
-from civicnotice.persistence import NoticeWorkpaperRepository
+from townlight_notice.main import app, _dispose_workpaper_repository
+from townlight_notice.persistence import NoticeWorkpaperRepository
 
 
 client = TestClient(app)
 
 
 def test_repository_persists_registry_and_deadline(tmp_path: Path) -> None:
-    db_path = tmp_path / "civicnotice.db"
+    db_path = tmp_path / "townlight_notice.db"
     db_url = f"sqlite+pysqlite:///{db_path.as_posix()}"
     repository = NoticeWorkpaperRepository(db_url=db_url)
     record = repository.create_notice_record(notice_id="N-1", notice_type="hearing", owner="Clerk")
@@ -21,7 +21,7 @@ def test_repository_persists_registry_and_deadline(tmp_path: Path) -> None:
     proof = repository.create_publication_proof(
         notice_id="N-1",
         notice_type="hearing",
-        source_module="civicclerk",
+        source_module="townlight_meetings",
         source_record_id="meeting-42",
         channel="newspaper",
         published_at="2026-05-10T09:00:00-06:00",
@@ -37,7 +37,7 @@ def test_repository_persists_registry_and_deadline(tmp_path: Path) -> None:
     stored_proof = reloaded.get_publication_proof(proof.proof_id)
     assert stored_plan.staff_review_required is True
     assert "official notice record" in stored_plan.disclaimer
-    assert stored_proof.source_module == "civicclerk"
+    assert stored_proof.source_module == "townlight_meetings"
     assert stored_proof.source_record_id == "meeting-42"
     assert stored_proof.confirmation_reference == "DG-12345"
     assert stored_proof.compliance_status == "proof_recorded_staff_review_required"
@@ -46,27 +46,27 @@ def test_repository_persists_registry_and_deadline(tmp_path: Path) -> None:
 
 
 def test_notice_persistence_api_round_trip(monkeypatch, tmp_path: Path) -> None:
-    db_path = tmp_path / "civicnotice-api.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
-    monkeypatch.setenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN", "test-token")
+    db_path = tmp_path / "townlight_notice-api.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN", "test-token")
     _dispose_workpaper_repository()
     created_record = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={"notice_id": "N-1", "notice_type": "hearing", "owner": "Clerk"},
-        headers={"X-CivicNotice-Write-Token": "test-token"},
+        headers={"X-Townlight-Notice-Write-Token": "test-token"},
     )
     record_id = created_record.json()["record_id"]
-    fetched_record = client.get(f"/api/v1/civicnotice/registry/{record_id}")
+    fetched_record = client.get(f"/api/v1/townlight_notice/registry/{record_id}")
     created_plan = client.post(
-        "/api/v1/civicnotice/deadlines",
+        "/api/v1/townlight_notice/deadlines",
         json={"notice_type": "hearing", "event_date": "2026-05-20", "lead_days": 10},
-        headers={"X-CivicNotice-Write-Token": "test-token"},
+        headers={"X-Townlight-Notice-Write-Token": "test-token"},
     )
     plan_id = created_plan.json()["plan_id"]
-    fetched_plan = client.get(f"/api/v1/civicnotice/deadlines/{plan_id}")
+    fetched_plan = client.get(f"/api/v1/townlight_notice/deadlines/{plan_id}")
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
-    monkeypatch.delenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN")
     assert fetched_record.status_code == 200
     assert fetched_record.json()["notice_id"] == "N-1"
     assert fetched_plan.status_code == 200
@@ -76,16 +76,16 @@ def test_notice_persistence_api_round_trip(monkeypatch, tmp_path: Path) -> None:
 
 
 def test_publication_proof_api_round_trip(monkeypatch, tmp_path: Path) -> None:
-    db_path = tmp_path / "civicnotice-proof.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
-    monkeypatch.setenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN", "test-token")
+    db_path = tmp_path / "townlight_notice-proof.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN", "test-token")
     _dispose_workpaper_repository()
     created_proof = client.post(
-        "/api/v1/civicnotice/publication-proof",
+        "/api/v1/townlight_notice/publication-proof",
         json={
             "notice_id": "N-2",
             "notice_type": "hearing",
-            "source_module": "civicclerk",
+            "source_module": "townlight_meetings",
             "source_record_id": "meeting-99",
             "channel": "public website",
             "published_at": "2026-05-10T09:00:00-06:00",
@@ -94,17 +94,17 @@ def test_publication_proof_api_round_trip(monkeypatch, tmp_path: Path) -> None:
             "statutory_basis": "staff-entered hearing notice basis",
             "reviewer": "City Clerk",
         },
-        headers={"X-CivicNotice-Write-Token": "test-token"},
+        headers={"X-Townlight-Notice-Write-Token": "test-token"},
     )
     proof_id = created_proof.json()["proof_id"]
-    fetched_proof = client.get(f"/api/v1/civicnotice/publication-proof/{proof_id}")
+    fetched_proof = client.get(f"/api/v1/townlight_notice/publication-proof/{proof_id}")
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
-    monkeypatch.delenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN")
     assert fetched_proof.status_code == 200
     payload = fetched_proof.json()
     assert payload["notice_id"] == "N-2"
-    assert payload["source_module"] == "civicclerk"
+    assert payload["source_module"] == "townlight_meetings"
     assert payload["source_record_id"] == "meeting-99"
     assert payload["confirmation_reference"] == "CMS-98765"
     assert "does not certify legal sufficiency" in " ".join(payload["proof_notes"])
@@ -112,44 +112,44 @@ def test_publication_proof_api_round_trip(monkeypatch, tmp_path: Path) -> None:
 
 
 def test_get_registry_without_persistence_returns_actionable_503(monkeypatch) -> None:
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL", raising=False)
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", raising=False)
     _dispose_workpaper_repository()
-    response = client.get("/api/v1/civicnotice/registry/example")
+    response = client.get("/api/v1/townlight_notice/registry/example")
     assert response.status_code == 503
-    assert "Set CIVICNOTICE_WORKPAPER_DB_URL" in response.json()["detail"]["fix"]
+    assert "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL" in response.json()["detail"]["fix"]
 
 
 def test_get_deadline_missing_id_returns_actionable_404(monkeypatch, tmp_path: Path) -> None:
-    db_path = tmp_path / "civicnotice-missing.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    db_path = tmp_path / "townlight_notice-missing.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
     _dispose_workpaper_repository()
-    response = client.get("/api/v1/civicnotice/deadlines/missing")
+    response = client.get("/api/v1/townlight_notice/deadlines/missing")
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
     assert response.status_code == 404
-    assert "POST /api/v1/civicnotice/deadlines" in response.json()["detail"]["fix"]
+    assert "POST /api/v1/townlight_notice/deadlines" in response.json()["detail"]["fix"]
     db_path.unlink()
 
 
 def test_get_publication_proof_missing_id_returns_actionable_404(
     monkeypatch, tmp_path: Path
 ) -> None:
-    db_path = tmp_path / "civicnotice-proof-missing.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    db_path = tmp_path / "townlight_notice-proof-missing.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
     _dispose_workpaper_repository()
-    response = client.get("/api/v1/civicnotice/publication-proof/missing")
+    response = client.get("/api/v1/townlight_notice/publication-proof/missing")
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
     assert response.status_code == 404
-    assert "POST /api/v1/civicnotice/publication-proof" in response.json()["detail"]["fix"]
+    assert "POST /api/v1/townlight_notice/publication-proof" in response.json()["detail"]["fix"]
     db_path.unlink()
 
 
 def test_publication_proof_without_persistence_returns_actionable_503(monkeypatch) -> None:
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL", raising=False)
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", raising=False)
     _dispose_workpaper_repository()
     response = client.post(
-        "/api/v1/civicnotice/publication-proof",
+        "/api/v1/townlight_notice/publication-proof",
         json={
             "notice_id": "N-3",
             "notice_type": "hearing",
@@ -163,26 +163,26 @@ def test_publication_proof_without_persistence_returns_actionable_503(monkeypatc
         },
     )
     assert response.status_code == 503
-    assert "Set CIVICNOTICE_WORKPAPER_DB_URL" in response.json()["detail"]["fix"]
+    assert "Set TOWNLIGHT_NOTICE_WORKPAPER_DB_URL" in response.json()["detail"]["fix"]
 
 
 def test_persistence_backed_write_requires_trusted_token(monkeypatch, tmp_path: Path) -> None:
-    db_path = tmp_path / "civicnotice-token.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
-    monkeypatch.setenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN", "test-token")
+    db_path = tmp_path / "townlight_notice-token.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN", "test-token")
     _dispose_workpaper_repository()
     missing = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={"notice_id": "N-4", "notice_type": "hearing", "owner": "Clerk"},
     )
     wrong = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={"notice_id": "N-4", "notice_type": "hearing", "owner": "Clerk"},
-        headers={"X-CivicNotice-Write-Token": "wrong"},
+        headers={"X-Townlight-Notice-Write-Token": "wrong"},
     )
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
-    monkeypatch.delenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN")
     assert missing.status_code == 403
     assert wrong.status_code == 403
     if db_path.exists():
@@ -192,19 +192,19 @@ def test_persistence_backed_write_requires_trusted_token(monkeypatch, tmp_path: 
 def test_persistence_backed_write_requires_guard_configuration(
     monkeypatch, tmp_path: Path
 ) -> None:
-    db_path = tmp_path / "civicnotice-token-missing.db"
-    monkeypatch.setenv("CIVICNOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
-    monkeypatch.delenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN", raising=False)
+    db_path = tmp_path / "townlight_notice-token-missing.db"
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL", f"sqlite+pysqlite:///{db_path.as_posix()}")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN", raising=False)
     _dispose_workpaper_repository()
     response = client.post(
-        "/api/v1/civicnotice/deadlines",
+        "/api/v1/townlight_notice/deadlines",
         json={"notice_type": "hearing", "event_date": "2026-05-20", "lead_days": 10},
-        headers={"X-CivicNotice-Write-Token": "test-token"},
+        headers={"X-Townlight-Notice-Write-Token": "test-token"},
     )
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
     assert response.status_code == 503
-    assert "CIVICNOTICE_TRUSTED_WRITE_TOKEN" in response.json()["detail"]["fix"]
+    assert "TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN" in response.json()["detail"]["fix"]
     if db_path.exists():
         db_path.unlink()
 
@@ -212,21 +212,21 @@ def test_persistence_backed_write_requires_guard_configuration(
 def test_configured_but_unavailable_persistence_returns_actionable_503(
     monkeypatch, tmp_path: Path
 ) -> None:
-    missing_parent = tmp_path / "missing-parent" / "civicnotice.db"
+    missing_parent = tmp_path / "missing-parent" / "townlight_notice.db"
     monkeypatch.setenv(
-        "CIVICNOTICE_WORKPAPER_DB_URL",
+        "TOWNLIGHT_NOTICE_WORKPAPER_DB_URL",
         f"sqlite+pysqlite:///{missing_parent.as_posix()}",
     )
-    monkeypatch.setenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN", "test-token")
+    monkeypatch.setenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN", "test-token")
     _dispose_workpaper_repository()
     response = client.post(
-        "/api/v1/civicnotice/registry",
+        "/api/v1/townlight_notice/registry",
         json={"notice_id": "N-5", "notice_type": "hearing", "owner": "Clerk"},
-        headers={"X-CivicNotice-Write-Token": "test-token"},
+        headers={"X-Townlight-Notice-Write-Token": "test-token"},
     )
     _dispose_workpaper_repository()
-    monkeypatch.delenv("CIVICNOTICE_WORKPAPER_DB_URL")
-    monkeypatch.delenv("CIVICNOTICE_TRUSTED_WRITE_TOKEN")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_WORKPAPER_DB_URL")
+    monkeypatch.delenv("TOWNLIGHT_NOTICE_TRUSTED_WRITE_TOKEN")
     assert response.status_code == 503
     assert "configured but unavailable" in response.json()["detail"]["message"]
     assert "database reachability" in response.json()["detail"]["fix"]

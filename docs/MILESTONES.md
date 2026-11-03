@@ -1,4 +1,4 @@
-<a id="civicnotice-milestones"></a>
+<a id="townlight_notice-milestones"></a>
 
 # Townlight Notice Milestones
 
@@ -32,4 +32,4 @@ Public-records export checklist for notice records.
 
 ## Milestone 7 - Public UI and Release
 
-Accessible public sample page at `/civicnotice`, release artifacts, CI green, and umbrella compatibility update.
+Accessible public sample page at `/townlight_notice`, release artifacts, CI green, and umbrella compatibility update.
