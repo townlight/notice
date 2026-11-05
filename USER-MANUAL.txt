@@ -1,7 +1,7 @@
-Windows x64 Beta 1 · MSI 1.7.1.1
+Windows x64 Beta 1 · MSI 1.7.2.1
 
-The signed Windows x64 beta 1.7.1.1 passed the documented fresh Windows
-Sandbox checks with synthetic data.
+The signed Windows x64 beta 1.7.2.1 updates installer metadata while
+preserving the accepted signed application/runtime cabinet.
 
 - Townlight Notice User Manual
   - Windows staff workflow — 0.3.0
@@ -91,7 +91,7 @@ accessibility/plain-language/translation readiness packets, build
 subscriber delivery plans, assemble archive/handoff packets, and
 assemble a notice/records export checklist.
 
-Notice 0.3.0 ships in the Windows x64 beta 1.7.1.1 with Townlight Core
+Notice 0.3.0 ships in the Windows x64 beta 1.7.2.1 with Townlight Core
 1.3.0.dev2. The Windows acceptance summary covers the installed staff
 workflow. Standalone deployment is documented separately below.
 
