@@ -15,7 +15,7 @@ Windows x64 Beta 1 · MSI 1.9.3.2
 Windows 1.8.1.1 adds shared meeting imports for 31 source families, with 34 supported source/format pairs. Installed Windows Sandbox checks exercised preview, save and durable readback using public captures and fixtures, plus the documented Townlight handoffs. These checks do not establish automatic discovery on every live portal or a complete retest of every module.
 
 - <a href="https://townlight.github.io/manuals/notice.html#townlight-notice-user-manual" id="toc-townlight-notice-user-manual">Townlight Notice User Manual</a>
-  - <a href="https://townlight.github.io/manuals/notice.html#windows-staff-workflow-0.3.0-candidate" id="toc-windows-staff-workflow-0.3.0-candidate">Windows staff workflow — 0.3.0</a>
+  - <a href="https://townlight.github.io/manuals/notice.html#windows-staff-workflow-0.3.0" id="toc-windows-staff-workflow-0.3.0">Windows staff workflow — 0.3.0</a>
   - <a href="https://townlight.github.io/manuals/notice.html#standalone-package-boundary" id="toc-standalone-package-boundary">Standalone package boundary</a>
   - <a href="https://townlight.github.io/manuals/notice.html#for-non-technical-users" id="toc-for-non-technical-users">For Non-Technical Users</a>
   - <a href="https://townlight.github.io/manuals/notice.html#for-it-and-technical-staff" id="toc-for-it-and-technical-staff">For IT and Technical Staff</a>
