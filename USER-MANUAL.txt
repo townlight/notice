@@ -1,8 +1,8 @@
-Windows 1.9.3.2 current release
+Windows 1.10.0.1 current release
 
-Townlight for Windows 1.9.3.2 is the current signed public beta. See the release notes and acceptance record.
+Townlight for Windows 1.10.0.1 is the current signed public beta. See the release notes and acceptance record.
 
-For an existing city, make and verify a backup, close Townlight, run the signed Windows 1.9.3.2 MSI, then reopen Townlight under the same Windows account and existing profile. Direct upgrade is tested from 1.9.3.1; earlier paths have separate prior evidence.
+For an existing city, make and verify a backup, close Townlight, run the signed Windows 1.10.0.1 MSI, then reopen Townlight under the same Windows account and existing profile. Direct upgrade is tested from 1.9.3.2; earlier paths have separate prior evidence.
 
 Windows 1.9.1.1 historical Station recorder release
 
@@ -10,7 +10,7 @@ Windows 1.9.1.1 improves the clerk workflows for Records, Meetings, and Code, ad
 
 Release and downloads · Acceptance and limits.
 
-Windows x64 Beta 1 · MSI 1.9.3.2
+Windows x64 Beta 1 · MSI 1.10.0.1
 
 Windows 1.8.1.1 adds shared meeting imports for 31 source families, with 34 supported source/format pairs. Installed Windows Sandbox checks exercised preview, save and durable readback using public captures and fixtures, plus the documented Townlight handoffs. These checks do not establish automatic discovery on every live portal or a complete retest of every module.
 
@@ -34,7 +34,7 @@ Windows 1.9.1.1 contains Station 0.4.4, Records 1.8.0.dev4, Townlight Runtime 0.
 
 Windows staff workflow — 0.3.0
 
-For a new city, install the signed Townlight Windows 1.9.3.2 MSI and complete first-run under the intended named Windows account with an empty database and a new profile. For an existing city, verify the backup, close Townlight, run the signed 1.9.3.2 MSI, and reopen under the same Windows account and profile; this is verified direct from 1.9.3.1. The approved profile path is %LOCALAPPDATA%\CivicSuite. Keep existing profiles and backups.
+For a new city, install the signed Townlight Windows 1.10.0.1 MSI and complete first-run under the intended named Windows account with an empty database and a new profile. For an existing city, verify the backup, close Townlight, run the signed 1.10.0.1 MSI, and reopen under the same Windows account and profile; this is verified direct from 1.9.3.2. The approved profile path is %LOCALAPPDATA%\CivicSuite. Keep existing profiles and backups.
 
 1.  Sign in with an account allowed to use Notice and open Public Notices. Create a draft with title, actual notice text, type, event date, staff-selected calendar lead days and staff-verified statutory basis. Save it. Its deadline workpaper uses the shared Core reminder helper; it does not establish legal sufficiency.
 2.  Select the saved notice, read the deadline workpaper and source, enter review notes, then record staff review. Approve that saved revision only after the responsible staff member has checked the law, timing, content and channels. Mechanical rule success never removes the staff-review requirement.
